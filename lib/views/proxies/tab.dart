@@ -191,7 +191,39 @@ class ProxiesTabViewState extends ConsumerState<ProxiesTabView>
     _keyMap = keyMap;
     return Stack(
       children: [
-        TabBarView(controller: _tabController, children: children),
+        Column(
+          children: [
+            Container(
+              margin: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.surfaceContainerHighest,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.tips_and_updates,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                  const SizedBox(width: 12),
+                  const Expanded(
+                    child: Text(
+                      '1. 中轉線路人在中國大陸以外的地方是測不到速的，會顯示Timeout\n2. 點測速以後，數字越小，速度越快',
+                      style: TextStyle(height: 1.5, fontSize: 13),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+              child: TabBarView(
+                controller: _tabController,
+                children: children,
+              ),
+            ),
+          ],
+        ),
         Positioned(
           bottom: 16,
           right: 16,
@@ -353,19 +385,16 @@ class _DelayTestButtonState extends State<DelayTestButton>
     return AnimatedBuilder(
       animation: _controller.view,
       builder: (_, child) {
-        return SizedBox(
-          width: 56,
-          height: 56,
-          child: FadeTransition(
-            opacity: _animation,
-            child: ScaleTransition(scale: _animation, child: child),
-          ),
+        return FadeTransition(
+          opacity: _animation,
+          child: ScaleTransition(scale: _animation, child: child),
         );
       },
-      child: FloatingActionButton(
+      child: FloatingActionButton.extended(
         heroTag: null,
         onPressed: _healthcheck,
-        child: const Icon(Icons.network_ping),
+        icon: const Icon(Icons.network_ping),
+        label: const Text('測速'),
       ),
     );
   }

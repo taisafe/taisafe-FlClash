@@ -50,15 +50,33 @@ GroupsState currentGroupsState(Ref ref) {
     patchClashConfigProvider.select((state) => state.mode),
   );
   final groups = ref.watch(groupsProvider);
+
+  bool filterProxy(Proxy proxy) {
+    final type = proxy.type.toLowerCase();
+    final name = proxy.name.toLowerCase();
+    if (['urltest', 'url-test', 'fallback'].contains(type)) return false;
+    if (['自动选择', '故障转移', 'auto', 'fallback'].contains(name)) return false;
+    return true;
+  }
+
   return GroupsState(
     value: switch (mode) {
       Mode.direct => [],
-      Mode.global => groups.toList(),
-      Mode.rule =>
-        groups
-            .where((item) => item.hidden == false)
-            .where((element) => element.name != GroupName.GLOBAL.name)
-            .toList(),
+      Mode.global => groups
+          .map((group) => group.copyWith(
+                all: group.all.where(filterProxy).toList(),
+              ))
+          .toList(),
+      Mode.rule => groups
+          .where((item) => item.hidden == false)
+          .where((element) => element.name != GroupName.GLOBAL.name)
+          .where((element) =>
+              element.type != GroupType.URLTest &&
+              element.type != GroupType.Fallback)
+          .map((group) => group.copyWith(
+                all: group.all.where(filterProxy).toList(),
+              ))
+          .toList(),
     },
   );
 }

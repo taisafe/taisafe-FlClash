@@ -16,6 +16,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path/path.dart';
+import 'package:r_upgrade/r_upgrade.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'common/common.dart';
@@ -495,11 +496,37 @@ class AppController {
               TextSpan(text: '- $submit \n', style: textTheme.bodyMedium),
           ],
         ),
-        confirmText: appLocalizations.goDownload,
+        confirmText: system.isAndroid ? appLocalizations.update : appLocalizations.goDownload,
       );
       if (res != true) {
         return;
       }
+      
+      if (system.isAndroid) {
+        final List assets = data['assets'] ?? [];
+        String? downloadUrl;
+        for (final asset in assets) {
+          final name = asset['name'] as String;
+          if (name.endsWith('.apk')) {
+            downloadUrl = asset['browser_download_url'];
+            break;
+          }
+        }
+        
+        if (downloadUrl != null) {
+          try {
+             await RUpgrade.upgrade(
+               downloadUrl,
+               fileName: 'flclash_update.apk',
+             );
+             return;
+          } catch (e) {
+             commonPrint.log('Update failed: $e');
+             // Fallback to browser
+          }
+        }
+      }
+      
       launchUrl(Uri.parse('https://github.com/$repository/releases/latest'));
     } else if (handleError) {
       globalState.showMessage(

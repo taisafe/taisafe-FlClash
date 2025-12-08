@@ -31,7 +31,7 @@ final baseInfoEdgeInsets = EdgeInsets.symmetric(
 
 final defaultTextScaleFactor =
     WidgetsBinding.instance.platformDispatcher.textScaleFactor;
-const httpTimeoutDuration = Duration(milliseconds: 5000);
+const httpTimeoutDuration = Duration(milliseconds: 3000);
 const moreDuration = Duration(milliseconds: 100);
 const animateDuration = Duration(milliseconds: 100);
 const midDuration = Duration(milliseconds: 200);
@@ -51,7 +51,7 @@ const localhost = '127.0.0.1';
 const clashConfigKey = 'clash_config';
 const configKey = 'config';
 const double dialogCommonWidth = 300;
-const repository = 'chen08209/FlClash';
+const repository = 'taisafe/taisafe-FlClash';
 const defaultExternalController = '127.0.0.1:9090';
 const maxMobileWidth = 99999; // Always use bottom navigation bar
 const maxLaptopWidth = 840;
