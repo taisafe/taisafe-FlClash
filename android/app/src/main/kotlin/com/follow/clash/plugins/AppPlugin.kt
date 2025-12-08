@@ -369,7 +369,7 @@ class AppPlugin : FlutterPlugin, MethodChannel.MethodCallHandler, ActivityAware 
     override fun onAttachedToEngine(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
         scope = CoroutineScope(Dispatchers.Default)
         channel =
-            MethodChannel(flutterPluginBinding.binaryMessenger, "${Components.PACKAGE_NAME}/app")
+            MethodChannel(flutterPluginBinding.binaryMessenger, "app.taisafe.vpn/app")
         channel.setMethodCallHandler(this)
     }
 

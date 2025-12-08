@@ -16,7 +16,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path/path.dart';
-import 'package:r_upgrade/r_upgrade.dart';
+// import 'package:r_upgrade/r_upgrade.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'common/common.dart';
@@ -306,27 +306,48 @@ class AppController {
   }
 
   Future<void> _setupClashConfig() async {
-    await _ref.read(currentProfileProvider)?.checkAndUpdate();
+    print('[AppController] _setupClashConfig starting...');
+    final profile = _ref.read(currentProfileProvider);
+    print('[AppController] Current profile: ${profile?.label}, id: ${profile?.id}, url: ${profile?.url}');
+    
+    print('[AppController] Step 1a: checkAndUpdate');
+    await profile?.checkAndUpdate();
+    print('[AppController] Step 1a completed');
+    
     final patchConfig = _ref.read(patchClashConfigProvider);
+    print('[AppController] Step 1b: _requestAdmin (tun.enable=${patchConfig.tun.enable})');
     final res = await _requestAdmin(patchConfig.tun.enable);
     if (res.isError) {
+      print('[AppController] _requestAdmin failed');
       return;
     }
+    print('[AppController] Step 1b completed');
+    
     final realTunEnable = _ref.read(realTunEnableProvider);
     final realPatchConfig = patchConfig.copyWith.tun(enable: realTunEnable);
+    print('[AppController] Step 1c: coreController.setupConfig');
     final message = await coreController.setupConfig(realPatchConfig);
+    print('[AppController] Step 1c completed, message: $message');
+    
     lastProfileModified = await _ref.read(
       currentProfileProvider.select((state) => state?.profileLastModified),
     );
     if (message.isNotEmpty) {
+      print('[AppController] setupConfig returned error: $message');
       throw message;
     }
+    print('[AppController] _setupClashConfig completed successfully');
   }
 
   Future _applyProfile() async {
+    print('[AppController] _applyProfile starting...');
+    print('[AppController] Step 1: setupClashConfig');
     await setupClashConfig();
+    print('[AppController] Step 2: updateGroups');
     await updateGroups();
+    print('[AppController] Step 3: updateProviders');
     await updateProviders();
+    print('[AppController] _applyProfile completed');
   }
 
   Future applyProfile({bool silence = false}) async {
@@ -373,8 +394,9 @@ class AppController {
   }
 
   Future<void> updateGroups() async {
+    print('[AppController] updateGroups starting...');
     try {
-      _ref.read(groupsProvider.notifier).value = await retry(
+      final groups = await retry(
         task: () async {
           final sortType = _ref.read(
             proxiesStyleSettingProvider.select((state) => state.sortType),
@@ -386,16 +408,25 @@ class AppController {
           final selectedMap = _ref.read(
             currentProfileProvider.select((state) => state?.selectedMap ?? {}),
           );
-          return await coreController.getProxiesGroups(
+          print('[AppController] Calling coreController.getProxiesGroups...');
+          final result = await coreController.getProxiesGroups(
             selectedMap: selectedMap,
             sortType: sortType,
             delayMap: delayMap,
             defaultTestUrl: testUrl,
           );
+          print('[AppController] getProxiesGroups returned ${result.length} groups');
+          for (var g in result) {
+            print('[AppController]   - Group: ${g.name}, proxies: ${g.all.length}');
+          }
+          return result;
         },
         retryIf: (res) => res.isEmpty,
       );
-    } catch (_) {
+      print('[AppController] Setting groups to provider: ${groups.length} groups');
+      _ref.read(groupsProvider.notifier).value = groups;
+    } catch (e) {
+      print('[AppController] updateGroups ERROR: $e');
       _ref.read(groupsProvider.notifier).value = [];
     }
   }
@@ -502,6 +533,8 @@ class AppController {
         return;
       }
       
+      // Android in-app update temporarily disabled due to build issues
+      /*
       if (system.isAndroid) {
         final List assets = data['assets'] ?? [];
         String? downloadUrl;
@@ -514,18 +547,10 @@ class AppController {
         }
         
         if (downloadUrl != null) {
-          try {
-             await RUpgrade.upgrade(
-               downloadUrl,
-               fileName: 'flclash_update.apk',
-             );
-             return;
-          } catch (e) {
-             commonPrint.log('Update failed: $e');
-             // Fallback to browser
-          }
+          // Fallback to browser for now
         }
       }
+      */
       
       launchUrl(Uri.parse('https://github.com/$repository/releases/latest'));
     } else if (handleError) {

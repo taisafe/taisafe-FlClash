@@ -2,8 +2,25 @@ import 'package:fl_clash/common/common.dart';
 import 'package:fl_clash/views/dashboard/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 
-class DashboardView extends StatelessWidget {
+import 'package:fl_clash/providers/v2board_provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+class DashboardView extends ConsumerStatefulWidget {
   const DashboardView({super.key});
+
+  @override
+  ConsumerState<DashboardView> createState() => _DashboardViewState();
+}
+
+class _DashboardViewState extends ConsumerState<DashboardView> {
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(userSubscriptionProvider.notifier).fetch();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

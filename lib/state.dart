@@ -515,10 +515,22 @@ class GlobalState {
   }
 
   Future<Map<String, dynamic>> getProfileConfig(String profileId) async {
-    final configMap = await coreController.getConfig(profileId);
-    configMap['rules'] = configMap['rule'];
-    configMap.remove('rule');
-    return configMap;
+    print('[GlobalState] getProfileConfig called for: $profileId');
+    try {
+      final configMap = await coreController.getConfig(profileId);
+      print('[GlobalState] getConfig returned ${configMap.length} entries');
+      configMap['rules'] = configMap['rule'];
+      configMap.remove('rule');
+      return configMap;
+    } catch (e) {
+      print('[GlobalState] getProfileConfig ERROR: $e');
+      // Return minimal config to allow app to continue functioning
+      return {
+        'proxies': [],
+        'proxy-groups': [],
+        'rules': [],
+      };
+    }
   }
 
   Future<Map<String, dynamic>> handleEvaluate(

@@ -97,9 +97,30 @@ class CoreController {
     ClashConfig clashConfig, {
     VoidCallback? preloadInvoke,
   }) async {
+    print('[CoreController] setupConfig called');
+    print('[CoreController] Step A: genConfigFile');
     await globalState.genConfigFile(clashConfig);
+    print('[CoreController] Step A completed');
+    
+    print('[CoreController] Step B: getSetupParams');
     final params = await globalState.getSetupParams();
-    final res = _interface.setupConfig(params);
+    print('[CoreController] Step B completed');
+    
+    print('[CoreController] Step C: _interface.setupConfig');
+    String res = '';
+    try {
+      res = await _interface.setupConfig(params).timeout(
+        const Duration(seconds: 5),
+        onTimeout: () {
+          print('[CoreController] setupConfig TIMEOUT after 5 seconds');
+          return '';  // Return empty string on timeout
+        },
+      );
+      print('[CoreController] Step C completed, result: $res');
+    } catch (e) {
+      print('[CoreController] setupConfig exception: $e');
+    }
+    
     if (preloadInvoke != null) {
       preloadInvoke();
     }
@@ -112,9 +133,31 @@ class CoreController {
     required SelectedMap selectedMap,
     required String defaultTestUrl,
   }) async {
-    final proxies = await _interface.getProxies();
+    print('[CoreController] getProxiesGroups called');
+    Map proxies = {};
+    try {
+      proxies = await _interface.getProxies().timeout(
+        const Duration(seconds: 5),
+        onTimeout: () {
+          print('[CoreController] getProxies TIMEOUT after 5 seconds');
+          return {};  // Return empty map on timeout
+        },
+      );
+      print('[CoreController] Raw proxies from core: ${proxies.length} entries');
+      print('[CoreController] Proxies keys: ${proxies.keys.toList()}');
+      if (proxies.containsKey('GLOBAL')) {
+        final globalProxy = proxies['GLOBAL'];
+        print('[CoreController] GLOBAL proxy all: ${globalProxy?['all']}');
+      }
+    } catch (e) {
+      print('[CoreController] getProxies exception: $e');
+      return [];
+    }
     return Isolate.run<List<Group>>(() {
-      if (proxies.isEmpty) return [];
+      if (proxies.isEmpty) {
+        print('[CoreController] Proxies is empty, returning []');
+        return [];
+      }
       final groupNames = [
         UsedProxy.GLOBAL.name,
         ...(proxies[UsedProxy.GLOBAL.name]['all'] as List).where((e) {
@@ -122,6 +165,7 @@ class CoreController {
           return GroupTypeExtension.valueList.contains(proxy['type']);
         }),
       ];
+      print('[CoreController] Group names: $groupNames');
       final groupsRaw = groupNames.map((groupName) {
         final group = proxies[groupName];
         group['all'] = ((group['all'] ?? []) as List)
@@ -222,12 +266,30 @@ class CoreController {
   }
 
   Future<Map<String, dynamic>> getConfig(String id) async {
+    print('[CoreController] getConfig called for id: $id');
     final profilePath = await appPath.getProfilePath(id);
-    final res = await _interface.getConfig(profilePath);
-    if (res.isSuccess) {
-      return res.data;
-    } else {
-      throw res.message;
+    print('[CoreController] getConfig profilePath: $profilePath');
+    
+    try {
+      print('[CoreController] Calling _interface.getConfig...');
+      final res = await _interface.getConfig(profilePath).timeout(
+        const Duration(seconds: 5),
+        onTimeout: () {
+          print('[CoreController] getConfig TIMEOUT after 5 seconds');
+          throw Exception('getConfig timeout - core not responding');
+        },
+      );
+      print('[CoreController] _interface.getConfig returned, isSuccess: ${res.isSuccess}');
+      if (res.isSuccess) {
+        print('[CoreController] getConfig success, data keys: ${res.data.keys.toList()}');
+        return res.data;
+      } else {
+        print('[CoreController] getConfig failed: ${res.message}');
+        throw res.message;
+      }
+    } catch (e) {
+      print('[CoreController] getConfig exception: $e');
+      rethrow;
     }
   }
 

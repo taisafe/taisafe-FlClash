@@ -119,21 +119,67 @@ class UserSubscription extends _$UserSubscription {
       final subscription = await v2boardApi.getSubscription();
       state = AsyncValue.data(subscription);
       
-      // Auto-sync subscribe URL
-      if (subscription?.subscribeUrl != null && subscription!.subscribeUrl!.isNotEmpty) {
-        final profiles = ref.read(profilesProvider);
-        final index = profiles.indexWhere((p) => p.label == 'TaiSafe Auto');
-        
-        if (index != -1) {
-          final profile = profiles[index];
-          if (profile.url != subscription.subscribeUrl) {
-            print('[UserSubscription] URL changed, updating profile...');
-            final newProfile = profile.copyWith(url: subscription.subscribeUrl!);
-            // Use appController to update which also handles persistence
-            globalState.appController.updateProfile(newProfile);
+        print('[UserSubscription] Checking subscription URL...');
+        print('[UserSubscription] subscribeUrl: ${subscription?.subscribeUrl}');
+        if (subscription?.subscribeUrl != null && subscription!.subscribeUrl!.isNotEmpty) {
+          final profiles = ref.read(profilesProvider);
+          print('[UserSubscription] Found ${profiles.length} profiles');
+          for (var p in profiles) {
+            print('[UserSubscription] - Profile: ${p.label}, URL: ${p.url}');
+          }
+          // Check for 'TaiSafe' or legacy 'TaiSafe Auto'
+          final index = profiles.indexWhere((p) => p.label == 'TaiSafe' || p.label == 'TaiSafe Auto');
+          print('[UserSubscription] Found TaiSafe profile at index: $index');
+          
+          if (index != -1) {
+            final profile = profiles[index];
+            // Check if file actually exists on disk
+            final fileExists = await profile.check();
+            print('[UserSubscription] Profile file exists: $fileExists');
+            
+            if (profile.url != subscription.subscribeUrl || !fileExists) {
+              print('[UserSubscription] URL changed or file missing, downloading...');
+              final newProfile = profile.copyWith(url: subscription.subscribeUrl!);
+              // Actually download the new config
+              try {
+                final downloadedProfile = await newProfile.update();
+                ref.read(profilesProvider.notifier).setProfile(downloadedProfile);
+                ref.read(currentProfileIdProvider.notifier).update(downloadedProfile.id);
+                globalState.appController.applyProfile();
+                print('[UserSubscription] Profile updated and applied');
+              } catch (e) {
+                print('[UserSubscription] Failed to download updated profile: $e');
+              }
+            } else {
+              print('[UserSubscription] Profile already up-to-date, applying...');
+              // Just make sure it's applied
+              ref.read(currentProfileIdProvider.notifier).update(profile.id);
+              globalState.appController.applyProfile();
+            }
+          } else {
+             // Profile missing, create it and DOWNLOAD
+             print('[UserSubscription] Profile missing, creating and downloading...');
+             final profile = Profile.normal(
+               label: 'TaiSafe', 
+               url: subscription.subscribeUrl!,
+             );
+             try {
+               // Actually download the subscription content
+               print('[UserSubscription] Downloading subscription from: ${subscription.subscribeUrl}');
+               final downloadedProfile = await profile.update();
+               ref.read(profilesProvider.notifier).setProfile(downloadedProfile);
+               ref.read(currentProfileIdProvider.notifier).update(downloadedProfile.id);
+               // Trigger the core to apply this profile
+               globalState.appController.applyProfile();
+               print('[UserSubscription] Profile downloaded and applied successfully');
+             } catch (e) {
+               print('[UserSubscription] Download failed: $e');
+               // Still save the profile metadata for later retry
+               ref.read(profilesProvider.notifier).setProfile(profile);
+               ref.read(currentProfileIdProvider.notifier).update(profile.id);
+             }
           }
         }
-      }
     } catch (e) {
       state = AsyncValue.error(e, StackTrace.current);
     }
@@ -311,11 +357,22 @@ class LoginAction extends _$LoginAction {
              } else {
                print('[LoginAction] Creating new profile');
                final profile = Profile.normal(
-                 label: 'TaiSafe Auto', 
+                 label: 'TaiSafe', 
                  url: subscribeUrl,
                );
-               ref.read(profilesProvider.notifier).setProfile(profile);
-               ref.read(currentProfileIdProvider.notifier).update(profile.id);
+               try {
+                 print('[LoginAction] Downloading profile content...');
+                 final updatedProfile = await profile.update();
+                 ref.read(profilesProvider.notifier).setProfile(updatedProfile);
+                 ref.read(currentProfileIdProvider.notifier).update(updatedProfile.id);
+                 // Trigger apply explicitly
+                 globalState.appController.applyProfile();
+               } catch (e) {
+                 print('[LoginAction] Profile download failed: $e');
+                 // Fallback to just setting it (will try again later)
+                 ref.read(profilesProvider.notifier).setProfile(profile);
+                 ref.read(currentProfileIdProvider.notifier).update(profile.id);
+               }
              }
           }
         } catch (e) {

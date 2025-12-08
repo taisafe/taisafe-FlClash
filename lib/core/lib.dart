@@ -17,14 +17,26 @@ class CoreLib extends CoreHandlerInterface {
 
   @override
   Future<String> preload() async {
+    print('[CoreLib] preload() starting...');
     final res = await service?.init();
+    print('[CoreLib] service?.init() result: $res');
+    
+    // CRITICAL FIX: Always complete the completer to prevent blocking
+    // Even if init fails, we need to unblock other operations
+    if (!_connectedCompleter.isCompleted) {
+      _connectedCompleter.complete(true);
+      print('[CoreLib] _connectedCompleter completed');
+    }
+    
     if (res?.isEmpty != true) {
+      print('[CoreLib] preload() returning error: $res');
       return res ?? '';
     }
-    _connectedCompleter.complete(true);
+    
     final syncRes = await service?.syncAndroidState(
       globalState.getAndroidState(),
     );
+    print('[CoreLib] syncAndroidState result: $syncRes');
     return syncRes ?? '';
   }
 

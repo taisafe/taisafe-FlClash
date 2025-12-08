@@ -17,12 +17,15 @@ class Request {
 
   Request() {
     dio = Dio(BaseOptions(headers: {'User-Agent': browserUa}));
-    _clashDio = Dio();
+    _clashDio = Dio(BaseOptions(
+      headers: {'User-Agent': 'Clash.Meta'},
+      validateStatus: (status) => true,
+    ));
     _clashDio.httpClientAdapter = IOHttpClientAdapter(
       createHttpClient: () {
         final client = HttpClient();
         client.findProxy = (Uri uri) {
-          client.userAgent = globalState.ua;
+          client.userAgent = 'Clash.Meta';
           return FlClashHttpOverrides.handleFindProxy(uri);
         };
         return client;
@@ -31,11 +34,23 @@ class Request {
   }
 
   Future<Response> getFileResponseForUrl(String url) async {
-    final response = await _clashDio.get(
-      url,
-      options: Options(responseType: ResponseType.bytes),
-    );
-    return response;
+    print('[Request] Downloading file from: $url');
+    try {
+      final response = await _clashDio.get(
+        url,
+        options: Options(responseType: ResponseType.bytes),
+      );
+      print('[Request] Response status: ${response.statusCode}');
+      if (response.data != null) {
+        print('[Request] Response data size: ${(response.data as List).length} bytes');
+      } else {
+        print('[Request] Response data is null');
+      }
+      return response;
+    } catch (e) {
+      print('[Request] Download failed: $e');
+      rethrow;
+    }
   }
 
   Future<Response> getTextResponseForUrl(String url) async {
@@ -77,7 +92,7 @@ class Request {
     'https://api.myip.com': IpInfo.fromMyIpJson,
     'https://ipapi.co/json': IpInfo.fromIpApiCoJson,
     'https://ident.me/json': IpInfo.fromIdentMeJson,
-    'http://ip-api.com/json': IpInfo.fromIpAPIJson,
+
     'https://api.ip.sb/geoip': IpInfo.fromIpSbJson,
     'https://ipinfo.io/json': IpInfo.fromIpInfoIoJson,
   };
