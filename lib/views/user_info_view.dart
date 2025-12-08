@@ -451,10 +451,10 @@ class _ActionsCard extends StatelessWidget {
       child: Column(
         children: [
           ListTile(
-            leading: Icon(Icons.logout, color: colorScheme.error),
+            leading: Icon(Icons.logout, color: colorScheme.primary),
             title: Text(
               '退出登录',
-              style: TextStyle(color: colorScheme.error),
+              style: TextStyle(color: colorScheme.primary),
             ),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),

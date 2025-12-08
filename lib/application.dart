@@ -186,6 +186,20 @@ class ApplicationState extends ConsumerState<Application> {
               ),
               labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
             ),
+            switchTheme: SwitchThemeData(
+              thumbColor: WidgetStateProperty.resolveWith((states) {
+                if (states.contains(WidgetState.selected)) {
+                  return const Color(0xFF64B5F6);
+                }
+                return null;
+              }),
+              trackColor: WidgetStateProperty.resolveWith((states) {
+                if (states.contains(WidgetState.selected)) {
+                  return const Color(0xFF64B5F6).withOpacity(0.5);
+                }
+                return null;
+              }),
+            ),
           ),
           darkTheme: ThemeData(
             useMaterial3: true,
@@ -195,7 +209,7 @@ class ApplicationState extends ConsumerState<Application> {
               brightness: Brightness.dark,
               primaryColor: themeProps.primaryColor,
             ).toPureBlack(themeProps.pureBlack),
-            scaffoldBackgroundColor: const Color(0xff000000),
+            scaffoldBackgroundColor: const Color(0xff121212),
             cardTheme: CardThemeData(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(16),
@@ -235,6 +249,20 @@ class ApplicationState extends ConsumerState<Application> {
                 borderRadius: BorderRadius.circular(16),
               ),
               labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
+            ),
+            switchTheme: SwitchThemeData(
+              thumbColor: WidgetStateProperty.resolveWith((states) {
+                if (states.contains(WidgetState.selected)) {
+                  return const Color(0xFF64B5F6);
+                }
+                return null;
+              }),
+              trackColor: WidgetStateProperty.resolveWith((states) {
+                if (states.contains(WidgetState.selected)) {
+                  return const Color(0xFF64B5F6).withOpacity(0.5);
+                }
+                return null;
+              }),
             ),
           ),
           home: child!,

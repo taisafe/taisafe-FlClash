@@ -546,29 +546,18 @@ ColorScheme genColorScheme(
   Color? color,
   bool ignoreConfig = false,
 }) {
-  final vm2 = ref.watch(
-    themeSettingProvider.select(
-      (state) => VM2(a: state.primaryColor, b: state.schemeVariant),
-    ),
+  // Brand color: Soft Tech Blue #64B5F6
+  const brandColor = Color(0xFF64B5F6);
+  
+  final schemeVariant = ref.watch(
+    themeSettingProvider.select((state) => state.schemeVariant),
   );
-  if (color == null && (ignoreConfig == true || vm2.a == null)) {
-    // if (globalState.corePalette != null) {
-    //   return globalState.corePalette!.toColorScheme(brightness: brightness);
-    // }
-    return ColorScheme.fromSeed(
-      seedColor:
-          globalState.corePalette
-              ?.toColorScheme(brightness: brightness)
-              .primary ??
-          globalState.accentColor,
-      brightness: brightness,
-      dynamicSchemeVariant: vm2.b,
-    );
-  }
+  
+  // Always use brand color for consistent branding
   return ColorScheme.fromSeed(
-    seedColor: color ?? Color(vm2.a!),
+    seedColor: color ?? brandColor,
     brightness: brightness,
-    dynamicSchemeVariant: vm2.b,
+    dynamicSchemeVariant: schemeVariant,
   );
 }
 

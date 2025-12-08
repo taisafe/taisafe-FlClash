@@ -88,7 +88,7 @@ const proxiesListStoreKey = PageStorageKey<String>('proxies_list');
 const toolsStoreKey = PageStorageKey<String>('tools');
 const profilesStoreKey = PageStorageKey<String>('profiles');
 
-const defaultPrimaryColor = 0XFFD8C0C3;
+const defaultPrimaryColor = 0xFF64B5F6;
 
 double getWidgetHeight(num lines) {
   return max(lines * 80 + (lines - 1) * 16, 0).ap;

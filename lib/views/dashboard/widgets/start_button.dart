@@ -86,10 +86,10 @@ class _StartButtonState extends ConsumerState<StartButton>
             onPressed: handleSwitchStart,
             style: ElevatedButton.styleFrom(
               backgroundColor: isRunning 
-                  ? context.colorScheme.errorContainer
+                  ? context.colorScheme.primary.withOpacity(0.8)
                   : context.colorScheme.primaryContainer,
               foregroundColor: isRunning
-                  ? context.colorScheme.onErrorContainer
+                  ? Colors.white
                   : context.colorScheme.onPrimaryContainer,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(16),
