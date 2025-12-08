@@ -161,6 +161,10 @@ class CurrentProfileId extends _$CurrentProfileId
   onUpdate(value) {
     globalState.config = globalState.config.copyWith(currentProfileId: value);
   }
+
+  void update(String? id) {
+    value = id;
+  }
 }
 
 @riverpod

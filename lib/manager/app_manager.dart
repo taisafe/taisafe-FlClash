@@ -151,17 +151,11 @@ class AppSidebarContainer extends ConsumerWidget {
     required BuildContext context,
     required Widget child,
   }) {
-    return Material(color: context.colorScheme.surfaceContainer, child: child);
-    // if (!system.isMacOS) {
-    //   return Material(
-    //     color: context.colorScheme.surfaceContainer,
-    //     child: child,
-    //   );
-    // }
-    // return child;
-    // return TransparentMacOSSidebar(
-    //   child: Material(color: Colors.transparent, child: child),
-    // );
+    // iOS/macOS styled sidebar background
+    return Material(
+      color: context.colorScheme.surface.withOpacity(0.5), 
+      child: child,
+    );
   }
 
   void _updateSideBarWidth(WidgetRef ref, double contentWidth) {

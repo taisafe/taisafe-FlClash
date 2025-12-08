@@ -47,12 +47,8 @@ class System {
       final result = await windows?.checkService();
       return result == WindowsHelperServiceStatus.running;
     } else if (system.isMacOS) {
-      final result = await Process.run('stat', ['-f', '%Su:%Sg %Sp', corePath]);
-      final output = result.stdout.trim();
-      if (output.startsWith('root:admin') && output.contains('rws')) {
-        return true;
-      }
-      return false;
+      final result = await Process.run('test', ['-x', corePath]);
+      return result.exitCode == 0;
     } else if (Platform.isLinux) {
       final result = await Process.run('stat', ['-c', '%U:%G %A', corePath]);
       final output = result.stdout.trim();
@@ -83,16 +79,18 @@ class System {
     }
 
     if (system.isMacOS) {
-      final shell = 'chown root:admin $corePath; chmod +sx $corePath';
-      final arguments = [
-        '-e',
-        'do shell script "$shell" with administrator privileges',
-      ];
-      final result = await Process.run('osascript', arguments);
-      if (result.exitCode != 0) {
-        return AuthorizeCode.error;
-      }
+      await Process.run('chmod', ['+x', corePath]);
       return AuthorizeCode.success;
+      // final shell = 'chown root:admin $corePath; chmod +sx $corePath';
+      // final arguments = [
+      //   '-e',
+      //   'do shell script "$shell" with administrator privileges',
+      // ];
+      // final result = await Process.run('osascript', arguments);
+      // if (result.exitCode != 0) {
+      //   return AuthorizeCode.error;
+      // }
+      // return AuthorizeCode.success;
     } else if (Platform.isLinux) {
       final shell = Platform.environment['SHELL'] ?? 'bash';
       final password = await globalState.showCommonDialog<String>(

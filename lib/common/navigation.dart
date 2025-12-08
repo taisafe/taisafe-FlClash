@@ -27,28 +27,9 @@ class Navigation {
             ? [NavigationItemMode.mobile, NavigationItemMode.desktop]
             : [],
       ),
-      NavigationItem(
-        icon: Icon(Icons.folder),
-        label: PageLabel.profiles,
-        builder: (_) =>
-            const ProfilesView(key: GlobalObjectKey(PageLabel.profiles)),
-      ),
-      NavigationItem(
-        icon: Icon(Icons.view_timeline),
-        label: PageLabel.requests,
-        builder: (_) =>
-            const RequestsView(key: GlobalObjectKey(PageLabel.requests)),
-        description: 'requestsDesc',
-        modes: [NavigationItemMode.desktop, NavigationItemMode.more],
-      ),
-      NavigationItem(
-        icon: Icon(Icons.ballot),
-        label: PageLabel.connections,
-        builder: (_) =>
-            const ConnectionsView(key: GlobalObjectKey(PageLabel.connections)),
-        description: 'connectionsDesc',
-        modes: [NavigationItemMode.desktop, NavigationItemMode.more],
-      ),
+
+
+
       NavigationItem(
         icon: Icon(Icons.storage),
         label: PageLabel.resources,
@@ -66,10 +47,11 @@ class Navigation {
             ? [NavigationItemMode.desktop, NavigationItemMode.more]
             : [],
       ),
+
       NavigationItem(
-        icon: Icon(Icons.construction),
-        label: PageLabel.tools,
-        builder: (_) => const ToolsView(key: GlobalObjectKey(PageLabel.tools)),
+        icon: const Icon(Icons.account_circle),
+        label: PageLabel.account,
+        builder: (_) => const AccountView(key: GlobalObjectKey(PageLabel.account)),
         modes: [NavigationItemMode.desktop, NavigationItemMode.mobile],
       ),
     ];

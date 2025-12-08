@@ -76,7 +76,7 @@ NavigationItemsState navigationItemsState(Ref ref) {
   return NavigationItemsState(
     value: navigation.getItems(
       openLogs: openLogs,
-      hasProxies: !isInit ? hasProfiles : hasProxies,
+      hasProxies: hasProfiles,
     ),
   );
 }

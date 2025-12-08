@@ -358,7 +358,7 @@ final class CurrentProfileIdProvider
   }
 }
 
-String _$currentProfileIdHash() => r'0c3e324e751aac1164da479e1796e826615bdcbe';
+String _$currentProfileIdHash() => r'7be769d755c680a13b64ecf8d286269412c501e1';
 
 abstract class _$CurrentProfileId extends $Notifier<String?> {
   String? build();

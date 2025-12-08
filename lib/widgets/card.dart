@@ -79,7 +79,7 @@ class CommonCard extends StatelessWidget {
     this.type = CommonCardType.plain,
     this.onPressed,
     this.selectWidget,
-    this.radius = 14,
+    this.radius = 16,
     required this.child,
     this.padding,
     this.enterAnimated = false,
@@ -95,9 +95,6 @@ class CommonCard extends StatelessWidget {
   final Info? info;
   final CommonCardType type;
   final double radius;
-
-  // final WidgetStateProperty<Color?>? backgroundColor;
-  // final WidgetStateProperty<BorderSide?>? borderSide;
 
   BorderSide getBorderSide(BuildContext context, Set<WidgetState> states) {
     final colorScheme = context.colorScheme;
@@ -130,7 +127,8 @@ class CommonCard extends StatelessWidget {
     if (isSelected) {
       return colorScheme.secondaryContainer;
     }
-    return colorScheme.surfaceContainerLow;
+    // Use card theme color for consistency
+    return Theme.of(context).cardTheme.color ?? colorScheme.surfaceContainerLow;
   }
 
   Color? getForegroundColor(BuildContext context, Set<WidgetState> states) {

@@ -73,64 +73,45 @@ class _StartButtonState extends ConsumerState<StartButton>
     if (!state.isInit || !state.hasProfile) {
       return Container();
     }
-    return Theme(
-      data: Theme.of(context).copyWith(
-        floatingActionButtonTheme: Theme.of(context).floatingActionButtonTheme
-            .copyWith(
-              sizeConstraints: BoxConstraints(minWidth: 56, maxWidth: 200),
+    return Consumer(
+      builder: (_, ref, _) {
+        final runTime = ref.watch(runTimeProvider);
+        final isRunning = runTime != null;
+        final timeText = utils.getTimeText(runTime);
+        
+        return SizedBox(
+          width: double.infinity,
+          height: 56,
+          child: ElevatedButton(
+            onPressed: handleSwitchStart,
+            style: ElevatedButton.styleFrom(
+              backgroundColor: isRunning 
+                  ? context.colorScheme.errorContainer
+                  : context.colorScheme.primaryContainer,
+              foregroundColor: isRunning
+                  ? context.colorScheme.onErrorContainer
+                  : context.colorScheme.onPrimaryContainer,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+              ),
             ),
-      ),
-      child: AnimatedBuilder(
-        animation: _controller!.view,
-        builder: (_, child) {
-          final textWidth =
-              globalState.measure
-                  .computeTextSize(
-                    Text(
-                      utils.getTimeDifference(DateTime.now()),
-                      style: context.textTheme.titleMedium?.toSoftBold,
-                    ),
-                  )
-                  .width +
-              16;
-          return FloatingActionButton(
-            clipBehavior: Clip.antiAlias,
-            materialTapTargetSize: MaterialTapTargetSize.padded,
-            heroTag: null,
-            onPressed: () {
-              handleSwitchStart();
-            },
             child: Row(
-              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Container(
-                  height: 56,
-                  width: 56,
-                  alignment: Alignment.center,
-                  child: AnimatedIcon(
-                    icon: AnimatedIcons.play_pause,
-                    progress: _animation,
-                  ),
+                Icon(
+                  isRunning ? Icons.stop_rounded : Icons.play_arrow_rounded,
+                  size: 28,
                 ),
-                SizedBox(width: textWidth * _animation.value, child: child!),
+                const SizedBox(width: 8),
+                Text(
+                  isRunning ? '斷開連接  $timeText' : '開始連接',
+                  style: context.textTheme.titleMedium?.toSoftBold,
+                ),
               ],
             ),
-          );
-        },
-        child: Consumer(
-          builder: (_, ref, _) {
-            final runTime = ref.watch(runTimeProvider);
-            final text = utils.getTimeText(runTime);
-            return Text(
-              text,
-              maxLines: 1,
-              overflow: TextOverflow.visible,
-              style: Theme.of(context).textTheme.titleMedium?.toSoftBold
-                  .copyWith(color: context.colorScheme.onPrimaryContainer),
-            );
-          },
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 }
