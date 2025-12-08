@@ -497,3 +497,318 @@ abstract class _$RegisterAction extends $Notifier<AsyncValue<bool>> {
     element.handleValue(ref, created);
   }
 }
+
+/// Available plans
+
+@ProviderFor(Plans)
+const plansProvider = PlansProvider._();
+
+/// Available plans
+final class PlansProvider
+    extends $NotifierProvider<Plans, AsyncValue<List<V2BoardPlan>>> {
+  /// Available plans
+  const PlansProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'plansProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$plansHash();
+
+  @$internal
+  @override
+  Plans create() => Plans();
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(AsyncValue<List<V2BoardPlan>> value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<AsyncValue<List<V2BoardPlan>>>(
+        value,
+      ),
+    );
+  }
+}
+
+String _$plansHash() => r'f995d693deb5b7876a09a3d8822506c7d0ae7ae5';
+
+/// Available plans
+
+abstract class _$Plans extends $Notifier<AsyncValue<List<V2BoardPlan>>> {
+  AsyncValue<List<V2BoardPlan>> build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build();
+    final ref =
+        this.ref
+            as $Ref<
+              AsyncValue<List<V2BoardPlan>>,
+              AsyncValue<List<V2BoardPlan>>
+            >;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<
+                AsyncValue<List<V2BoardPlan>>,
+                AsyncValue<List<V2BoardPlan>>
+              >,
+              AsyncValue<List<V2BoardPlan>>,
+              Object?,
+              Object?
+            >;
+    element.handleValue(ref, created);
+  }
+}
+
+/// Gift card redemption action
+
+@ProviderFor(RedeemGiftCard)
+const redeemGiftCardProvider = RedeemGiftCardProvider._();
+
+/// Gift card redemption action
+final class RedeemGiftCardProvider
+    extends $NotifierProvider<RedeemGiftCard, AsyncValue<String?>> {
+  /// Gift card redemption action
+  const RedeemGiftCardProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'redeemGiftCardProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$redeemGiftCardHash();
+
+  @$internal
+  @override
+  RedeemGiftCard create() => RedeemGiftCard();
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(AsyncValue<String?> value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<AsyncValue<String?>>(value),
+    );
+  }
+}
+
+String _$redeemGiftCardHash() => r'8dad1e6f7f05e993eb4aeb4cfe7e930d7ad68f50';
+
+/// Gift card redemption action
+
+abstract class _$RedeemGiftCard extends $Notifier<AsyncValue<String?>> {
+  AsyncValue<String?> build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build();
+    final ref = this.ref as $Ref<AsyncValue<String?>, AsyncValue<String?>>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<AsyncValue<String?>, AsyncValue<String?>>,
+              AsyncValue<String?>,
+              Object?,
+              Object?
+            >;
+    element.handleValue(ref, created);
+  }
+}
+
+/// Purchase plan action
+
+@ProviderFor(PurchasePlan)
+const purchasePlanProvider = PurchasePlanProvider._();
+
+/// Purchase plan action
+final class PurchasePlanProvider
+    extends $NotifierProvider<PurchasePlan, AsyncValue<String?>> {
+  /// Purchase plan action
+  const PurchasePlanProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'purchasePlanProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$purchasePlanHash();
+
+  @$internal
+  @override
+  PurchasePlan create() => PurchasePlan();
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(AsyncValue<String?> value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<AsyncValue<String?>>(value),
+    );
+  }
+}
+
+String _$purchasePlanHash() => r'f5ba490a05d4c6f4128fa227953da96605bb5ef8';
+
+/// Purchase plan action
+
+abstract class _$PurchasePlan extends $Notifier<AsyncValue<String?>> {
+  AsyncValue<String?> build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build();
+    final ref = this.ref as $Ref<AsyncValue<String?>, AsyncValue<String?>>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<AsyncValue<String?>, AsyncValue<String?>>,
+              AsyncValue<String?>,
+              Object?,
+              Object?
+            >;
+    element.handleValue(ref, created);
+  }
+}
+
+/// User orders
+
+@ProviderFor(Orders)
+const ordersProvider = OrdersProvider._();
+
+/// User orders
+final class OrdersProvider
+    extends $NotifierProvider<Orders, AsyncValue<List<V2BoardOrder>>> {
+  /// User orders
+  const OrdersProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'ordersProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$ordersHash();
+
+  @$internal
+  @override
+  Orders create() => Orders();
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(AsyncValue<List<V2BoardOrder>> value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<AsyncValue<List<V2BoardOrder>>>(
+        value,
+      ),
+    );
+  }
+}
+
+String _$ordersHash() => r'4ba46df60c9a160f9a02f944c5984bf4eebc40cf';
+
+/// User orders
+
+abstract class _$Orders extends $Notifier<AsyncValue<List<V2BoardOrder>>> {
+  AsyncValue<List<V2BoardOrder>> build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build();
+    final ref =
+        this.ref
+            as $Ref<
+              AsyncValue<List<V2BoardOrder>>,
+              AsyncValue<List<V2BoardOrder>>
+            >;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<
+                AsyncValue<List<V2BoardOrder>>,
+                AsyncValue<List<V2BoardOrder>>
+              >,
+              AsyncValue<List<V2BoardOrder>>,
+              Object?,
+              Object?
+            >;
+    element.handleValue(ref, created);
+  }
+}
+
+/// Order actions (cancel, checkout)
+
+@ProviderFor(OrderAction)
+const orderActionProvider = OrderActionProvider._();
+
+/// Order actions (cancel, checkout)
+final class OrderActionProvider
+    extends $NotifierProvider<OrderAction, AsyncValue<String?>> {
+  /// Order actions (cancel, checkout)
+  const OrderActionProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'orderActionProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$orderActionHash();
+
+  @$internal
+  @override
+  OrderAction create() => OrderAction();
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(AsyncValue<String?> value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<AsyncValue<String?>>(value),
+    );
+  }
+}
+
+String _$orderActionHash() => r'8b854645401b2217c76362a9ecf24e938c6ead88';
+
+/// Order actions (cancel, checkout)
+
+abstract class _$OrderAction extends $Notifier<AsyncValue<String?>> {
+  AsyncValue<String?> build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build();
+    final ref = this.ref as $Ref<AsyncValue<String?>, AsyncValue<String?>>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<AsyncValue<String?>, AsyncValue<String?>>,
+              AsyncValue<String?>,
+              Object?,
+              Object?
+            >;
+    element.handleValue(ref, created);
+  }
+}

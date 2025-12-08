@@ -28,6 +28,14 @@ class Navigation {
             : [],
       ),
 
+      NavigationItem(
+        icon: const Icon(Icons.storefront),
+        label: PageLabel.shop,
+        builder: (_) =>
+            const ShopView(key: GlobalObjectKey(PageLabel.shop)),
+        modes: [NavigationItemMode.mobile, NavigationItemMode.desktop],
+      ),
+
 
 
       NavigationItem(

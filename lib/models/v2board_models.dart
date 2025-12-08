@@ -2,6 +2,7 @@
 // Data structures for V2Board API responses
 
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:flutter/material.dart';
 
 part 'generated/v2board_models.freezed.dart';
 part 'generated/v2board_models.g.dart';
@@ -19,6 +20,7 @@ abstract class V2BoardUser with _$V2BoardUser {
     @JsonKey(name: 'plan_id') int? planId,
     @JsonKey(name: 'uuid') String? uuid,
     @JsonKey(name: 'avatar_url') String? avatarUrl,
+    @Default(0) int balance,
     V2BoardPlan? plan,
   }) = _V2BoardUser;
 
@@ -81,13 +83,114 @@ abstract class V2BoardPlan with _$V2BoardPlan {
   const factory V2BoardPlan({
     required int id,
     String? name,
-    int? groupId,
+    String? content,
+    @JsonKey(name: 'group_id') int? groupId,
     @JsonKey(name: 'transfer_enable') int? transferEnable,
     @JsonKey(name: 'speed_limit') int? speedLimit,
+    @JsonKey(name: 'device_limit') int? deviceLimit,
+    @JsonKey(name: 'month_price') int? monthPrice,
+    @JsonKey(name: 'quarter_price') int? quarterPrice,
+    @JsonKey(name: 'half_year_price') int? halfYearPrice,
+    @JsonKey(name: 'year_price') int? yearPrice,
+    @JsonKey(name: 'two_year_price') int? twoYearPrice,
+    @JsonKey(name: 'three_year_price') int? threeYearPrice,
+    @JsonKey(name: 'onetime_price') int? onetimePrice,
+    @JsonKey(name: 'reset_price') int? resetPrice,
+    int? show,
+    int? sort,
+    int? renew,
   }) = _V2BoardPlan;
 
   factory V2BoardPlan.fromJson(Map<String, dynamic> json) =>
       _$V2BoardPlanFromJson(json);
+}
+
+extension V2BoardPlanExtension on V2BoardPlan {
+  /// Get formatted price in points
+  String formatPrice(int? priceInCents) {
+    if (priceInCents == null) return '-';
+    return '$priceInCents 點';
+  }
+  
+  /// Get available price cycles
+  List<MapEntry<String, int>> get availableCycles {
+    final cycles = <MapEntry<String, int>>[];
+    if (monthPrice != null) cycles.add(MapEntry('month_price', monthPrice!));
+    if (quarterPrice != null) cycles.add(MapEntry('quarter_price', quarterPrice!));
+    if (halfYearPrice != null) cycles.add(MapEntry('half_year_price', halfYearPrice!));
+    if (yearPrice != null) cycles.add(MapEntry('year_price', yearPrice!));
+    if (twoYearPrice != null) cycles.add(MapEntry('two_year_price', twoYearPrice!));
+    if (threeYearPrice != null) cycles.add(MapEntry('three_year_price', threeYearPrice!));
+    if (onetimePrice != null) cycles.add(MapEntry('onetime_price', onetimePrice!));
+    return cycles;
+  }
+  
+  /// Get cycle display name
+  String getCycleName(String cycle) {
+    switch (cycle) {
+      case 'month_price': return '月付';
+      case 'quarter_price': return '季付';
+      case 'half_year_price': return '半年付';
+      case 'year_price': return '年付';
+      case 'two_year_price': return '兩年付';
+      case 'three_year_price': return '三年付';
+      case 'onetime_price': return '一次性';
+      default: return cycle;
+    }
+  }
+}
+
+/// Order info
+@freezed
+abstract class V2BoardOrder with _$V2BoardOrder {
+  const factory V2BoardOrder({
+    @JsonKey(name: 'trade_no') String? tradeNo,
+    @JsonKey(name: 'plan_id') int? planId,
+    String? cycle,
+    @JsonKey(name: 'total_amount') int? totalAmount,
+    int? status,
+    @JsonKey(name: 'created_at') int? createdAt,
+    V2BoardPlan? plan,
+  }) = _V2BoardOrder;
+
+  factory V2BoardOrder.fromJson(Map<String, dynamic> json) =>
+      _$V2BoardOrderFromJson(json);
+}
+
+extension V2BoardOrderExtension on V2BoardOrder {
+  String get statusText {
+    switch (status) {
+      case 0:
+        return '待支付';
+      case 1:
+        return '開通中';
+      case 2:
+        return '已取消';
+      case 3:
+        return '已完成';
+      case 4:
+        return '已折抵';
+      default:
+        return '未知';
+    }
+  }
+  
+  Color get statusColor {
+    switch (status) {
+      case 0:
+        return Colors.orange;
+      case 1:
+        return Colors.blue;
+      case 2:
+        return Colors.grey;
+      case 3:
+        return Colors.green;
+      case 4:
+        return Colors.purple;
+      default:
+        return Colors.grey;
+    }
+  }
 }
 
 /// Subscription info

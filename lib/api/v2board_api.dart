@@ -354,6 +354,204 @@ class V2BoardApi {
       );
     }
   }
+  
+  // ============ Shop ============
+  
+  /// Redeem gift card
+  Future<Map<String, dynamic>> redeemGiftCard(String giftcard) async {
+    try {
+      final response = await _dio.post(
+        '/user/redeemgiftcard',
+        data: {'giftcard': giftcard},
+      );
+      final data = response.data;
+      if (data is Map<String, dynamic>) {
+        if (data['status'] != null && data['status'] != 200) {
+          throw V2BoardApiError(
+            data['message'] ?? '兌換失敗',
+            data['status'],
+          );
+        }
+        return data;
+      }
+      return {'message': '兌換成功'};
+    } on DioException catch (e) {
+      throw V2BoardApiError(
+        e.response?.data?['message'] ?? '禮物卡兌換失敗',
+        e.response?.statusCode,
+      );
+    }
+  }
+  
+  /// Get available plans
+  Future<List<V2BoardPlan>> getPlans() async {
+    try {
+      final response = await _dio.get('/user/plan/fetch');
+      final data = response.data;
+      if (data is Map<String, dynamic>) {
+        if (data['status'] != null && data['status'] != 200) {
+          throw V2BoardApiError(
+            data['message'] ?? 'Unknown error',
+            data['status'],
+          );
+        }
+        final listData = data['data'];
+        if (listData is List) {
+          return listData.map((e) => V2BoardPlan.fromJson(e as Map<String, dynamic>)).toList();
+        }
+      }
+      return [];
+    } on DioException catch (e) {
+      throw V2BoardApiError(
+        e.response?.data?['message'] ?? '獲取套餐失敗',
+        e.response?.statusCode,
+      );
+    }
+  }
+  
+  /// Verify coupon code
+  Future<Map<String, dynamic>> verifyCoupon({
+    required String code,
+    required int planId,
+  }) async {
+    try {
+      final response = await _dio.post(
+        '/user/coupon/check',
+        data: {
+          'code': code,
+          'plan_id': planId,
+        },
+      );
+      final data = response.data;
+      if (data is Map<String, dynamic>) {
+         // Some versions might just return true/false or object, handle flexibly if needed
+         // Based on provided logic, it returns discount info probably
+         if (data['status'] != null && data['status'] != 200) {
+           throw V2BoardApiError(
+             data['message'] ?? '優惠碼無效',
+             data['status'],
+           );
+         }
+         return data['data'] ?? data;
+      }
+      return {'valid': true};
+    } on DioException catch (e) {
+      throw V2BoardApiError(
+        e.response?.data?['message'] ?? '優惠碼驗證失敗',
+        e.response?.statusCode,
+      );
+    }
+  }
+
+  /// Create order for a plan
+  Future<V2BoardOrder> createOrder({
+    required int planId,
+    required String cycle,
+    String? couponCode,
+  }) async {
+    try {
+      final response = await _dio.post(
+        '/user/order/save',
+        data: {
+          'plan_id': planId,
+          'period': cycle,
+          if (couponCode != null && couponCode.isNotEmpty) 'coupon_code': couponCode,
+        },
+      );
+      
+      // Custom handling: some versions return data as trade_no string directly
+      final data = response.data;
+      
+      // Check for error message in 200 OK response
+      if (data is Map<String, dynamic>) {
+        if (data['data'] == null && data['message'] != null) {
+           throw V2BoardApiError(data['message'], 200);
+        }
+        if (data['data'] is String) {
+          return V2BoardOrder(tradeNo: data['data'] as String);
+        }
+      }
+      
+      return _parseResponse(response, V2BoardOrder.fromJson);
+    } on DioException catch (e) {
+      throw V2BoardApiError(
+        e.response?.data?['message'] ?? '創建訂單失敗',
+        e.response?.statusCode,
+      );
+    }
+  }
+  
+  /// Checkout order with balance
+  Future<Map<String, dynamic>> checkoutOrder(String tradeNo) async {
+    try {
+      final response = await _dio.post(
+        '/user/order/checkout',
+        data: {
+          'trade_no': tradeNo,
+          'method': 1, // Balance payment
+        },
+      );
+      final data = response.data;
+      if (data is Map<String, dynamic>) {
+        if (data['status'] != null && data['status'] != 200) {
+          throw V2BoardApiError(
+            data['message'] ?? '支付失敗',
+            data['status'],
+          );
+        }
+        return data;
+      }
+      return {'message': '支付成功'};
+    } on DioException catch (e) {
+      throw V2BoardApiError(
+        e.response?.data?['message'] ?? '訂單結賬失敗',
+        e.response?.statusCode,
+      );
+    }
+  }
+  /// Get user orders
+  Future<List<V2BoardOrder>> getOrders() async {
+    try {
+      final response = await _dio.get('/user/order/fetch');
+      return _parseListResponse(response, V2BoardOrder.fromJson);
+    } on DioException catch (e) {
+      throw V2BoardApiError(
+        e.response?.data?['message'] ?? '獲取訂單列表失敗',
+        e.response?.statusCode,
+      );
+    }
+  }
+
+  /// Cancel order
+  Future<void> cancelOrder(String tradeNo) async {
+    try {
+      await _dio.post(
+        '/user/order/cancel',
+        data: {'trade_no': tradeNo},
+      );
+    } on DioException catch (e) {
+      throw V2BoardApiError(
+        e.response?.data?['message'] ?? '取消訂單失敗',
+        e.response?.statusCode,
+      );
+    }
+  }
+
+  /// Get order details
+  Future<V2BoardOrder> getOrderDetails(String tradeNo) async {
+    try {
+      final response = await _dio.get(
+        '/user/order/detail',
+        queryParameters: {'trade_no': tradeNo},
+      );
+      return _parseResponse(response, V2BoardOrder.fromJson);
+    } on DioException catch (e) {
+      throw V2BoardApiError(
+        e.response?.data?['message'] ?? '獲取訂單詳情失敗',
+        e.response?.statusCode,
+      );
+    }
+  }
 }
 
 /// Global V2Board API instance

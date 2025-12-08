@@ -4,6 +4,7 @@
 import 'package:fl_clash/common/common.dart';
 import 'package:fl_clash/providers/v2board_provider.dart';
 import 'package:fl_clash/views/user_info_view.dart';
+import 'package:fl_clash/views/orders_view.dart';
 import 'package:fl_clash/views/notices_view.dart';
 import 'package:fl_clash/views/profiles/profiles.dart';
 import 'package:fl_clash/views/crisp_chat_view.dart';
@@ -24,7 +25,7 @@ class _AccountViewState extends ConsumerState<AccountView>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 4, vsync: this);
+    _tabController = TabController(length: 5, vsync: this);
   }
 
   @override
@@ -106,6 +107,7 @@ class _AccountViewState extends ConsumerState<AccountView>
               ref.read(currentUserProvider.notifier).fetch();
               ref.read(userSubscriptionProvider.notifier).fetch();
               ref.read(noticesProvider.notifier).fetch();
+              ref.read(ordersProvider.notifier).fetch();
               // Crisp doesn't need manual refresh
             },
             icon: const Icon(Icons.refresh),
@@ -135,6 +137,10 @@ class _AccountViewState extends ConsumerState<AccountView>
               text: '客服',
             ),
             Tab(
+              icon: Icon(Icons.receipt_long),
+              text: '訂單',
+            ),
+            Tab(
               icon: Icon(Icons.description_outlined),
               text: '配置',
             ),
@@ -150,6 +156,7 @@ class _AccountViewState extends ConsumerState<AccountView>
           UserInfoView(),
           NoticesView(),
           CrispChatView(),
+          OrdersView(isEmbedded: true),
           ProfilesView(),
         ],
       ),

@@ -16,3 +16,5 @@ export 'user_info_view.dart';
 export 'notices_view.dart';
 export 'tickets_view.dart';
 export 'account_view.dart';
+export 'shop_view.dart';
+export 'orders_view.dart';

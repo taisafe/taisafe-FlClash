@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$V2BoardUser {
 
- int get id; String? get email;@JsonKey(name: 'transfer_enable') int? get transferEnable;@JsonKey(name: 'u') int? get uploadTraffic;@JsonKey(name: 'd') int? get downloadTraffic;@JsonKey(name: 'expired_at') int? get expiredAt;@JsonKey(name: 'plan_id') int? get planId;@JsonKey(name: 'uuid') String? get uuid;@JsonKey(name: 'avatar_url') String? get avatarUrl; V2BoardPlan? get plan;
+ int get id; String? get email;@JsonKey(name: 'transfer_enable') int? get transferEnable;@JsonKey(name: 'u') int? get uploadTraffic;@JsonKey(name: 'd') int? get downloadTraffic;@JsonKey(name: 'expired_at') int? get expiredAt;@JsonKey(name: 'plan_id') int? get planId;@JsonKey(name: 'uuid') String? get uuid;@JsonKey(name: 'avatar_url') String? get avatarUrl; int get balance; V2BoardPlan? get plan;
 /// Create a copy of V2BoardUser
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $V2BoardUserCopyWith<V2BoardUser> get copyWith => _$V2BoardUserCopyWithImpl<V2Bo
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is V2BoardUser&&(identical(other.id, id) || other.id == id)&&(identical(other.email, email) || other.email == email)&&(identical(other.transferEnable, transferEnable) || other.transferEnable == transferEnable)&&(identical(other.uploadTraffic, uploadTraffic) || other.uploadTraffic == uploadTraffic)&&(identical(other.downloadTraffic, downloadTraffic) || other.downloadTraffic == downloadTraffic)&&(identical(other.expiredAt, expiredAt) || other.expiredAt == expiredAt)&&(identical(other.planId, planId) || other.planId == planId)&&(identical(other.uuid, uuid) || other.uuid == uuid)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl)&&(identical(other.plan, plan) || other.plan == plan));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is V2BoardUser&&(identical(other.id, id) || other.id == id)&&(identical(other.email, email) || other.email == email)&&(identical(other.transferEnable, transferEnable) || other.transferEnable == transferEnable)&&(identical(other.uploadTraffic, uploadTraffic) || other.uploadTraffic == uploadTraffic)&&(identical(other.downloadTraffic, downloadTraffic) || other.downloadTraffic == downloadTraffic)&&(identical(other.expiredAt, expiredAt) || other.expiredAt == expiredAt)&&(identical(other.planId, planId) || other.planId == planId)&&(identical(other.uuid, uuid) || other.uuid == uuid)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl)&&(identical(other.balance, balance) || other.balance == balance)&&(identical(other.plan, plan) || other.plan == plan));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,email,transferEnable,uploadTraffic,downloadTraffic,expiredAt,planId,uuid,avatarUrl,plan);
+int get hashCode => Object.hash(runtimeType,id,email,transferEnable,uploadTraffic,downloadTraffic,expiredAt,planId,uuid,avatarUrl,balance,plan);
 
 @override
 String toString() {
-  return 'V2BoardUser(id: $id, email: $email, transferEnable: $transferEnable, uploadTraffic: $uploadTraffic, downloadTraffic: $downloadTraffic, expiredAt: $expiredAt, planId: $planId, uuid: $uuid, avatarUrl: $avatarUrl, plan: $plan)';
+  return 'V2BoardUser(id: $id, email: $email, transferEnable: $transferEnable, uploadTraffic: $uploadTraffic, downloadTraffic: $downloadTraffic, expiredAt: $expiredAt, planId: $planId, uuid: $uuid, avatarUrl: $avatarUrl, balance: $balance, plan: $plan)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $V2BoardUserCopyWith<$Res>  {
   factory $V2BoardUserCopyWith(V2BoardUser value, $Res Function(V2BoardUser) _then) = _$V2BoardUserCopyWithImpl;
 @useResult
 $Res call({
- int id, String? email,@JsonKey(name: 'transfer_enable') int? transferEnable,@JsonKey(name: 'u') int? uploadTraffic,@JsonKey(name: 'd') int? downloadTraffic,@JsonKey(name: 'expired_at') int? expiredAt,@JsonKey(name: 'plan_id') int? planId,@JsonKey(name: 'uuid') String? uuid,@JsonKey(name: 'avatar_url') String? avatarUrl, V2BoardPlan? plan
+ int id, String? email,@JsonKey(name: 'transfer_enable') int? transferEnable,@JsonKey(name: 'u') int? uploadTraffic,@JsonKey(name: 'd') int? downloadTraffic,@JsonKey(name: 'expired_at') int? expiredAt,@JsonKey(name: 'plan_id') int? planId,@JsonKey(name: 'uuid') String? uuid,@JsonKey(name: 'avatar_url') String? avatarUrl, int balance, V2BoardPlan? plan
 });
 
 
@@ -65,7 +65,7 @@ class _$V2BoardUserCopyWithImpl<$Res>
 
 /// Create a copy of V2BoardUser
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? email = freezed,Object? transferEnable = freezed,Object? uploadTraffic = freezed,Object? downloadTraffic = freezed,Object? expiredAt = freezed,Object? planId = freezed,Object? uuid = freezed,Object? avatarUrl = freezed,Object? plan = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? email = freezed,Object? transferEnable = freezed,Object? uploadTraffic = freezed,Object? downloadTraffic = freezed,Object? expiredAt = freezed,Object? planId = freezed,Object? uuid = freezed,Object? avatarUrl = freezed,Object? balance = null,Object? plan = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,email: freezed == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
@@ -76,7 +76,8 @@ as int?,expiredAt: freezed == expiredAt ? _self.expiredAt : expiredAt // ignore:
 as int?,planId: freezed == planId ? _self.planId : planId // ignore: cast_nullable_to_non_nullable
 as int?,uuid: freezed == uuid ? _self.uuid : uuid // ignore: cast_nullable_to_non_nullable
 as String?,avatarUrl: freezed == avatarUrl ? _self.avatarUrl : avatarUrl // ignore: cast_nullable_to_non_nullable
-as String?,plan: freezed == plan ? _self.plan : plan // ignore: cast_nullable_to_non_nullable
+as String?,balance: null == balance ? _self.balance : balance // ignore: cast_nullable_to_non_nullable
+as int,plan: freezed == plan ? _self.plan : plan // ignore: cast_nullable_to_non_nullable
 as V2BoardPlan?,
   ));
 }
@@ -174,10 +175,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  String? email, @JsonKey(name: 'transfer_enable')  int? transferEnable, @JsonKey(name: 'u')  int? uploadTraffic, @JsonKey(name: 'd')  int? downloadTraffic, @JsonKey(name: 'expired_at')  int? expiredAt, @JsonKey(name: 'plan_id')  int? planId, @JsonKey(name: 'uuid')  String? uuid, @JsonKey(name: 'avatar_url')  String? avatarUrl,  V2BoardPlan? plan)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  String? email, @JsonKey(name: 'transfer_enable')  int? transferEnable, @JsonKey(name: 'u')  int? uploadTraffic, @JsonKey(name: 'd')  int? downloadTraffic, @JsonKey(name: 'expired_at')  int? expiredAt, @JsonKey(name: 'plan_id')  int? planId, @JsonKey(name: 'uuid')  String? uuid, @JsonKey(name: 'avatar_url')  String? avatarUrl,  int balance,  V2BoardPlan? plan)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _V2BoardUser() when $default != null:
-return $default(_that.id,_that.email,_that.transferEnable,_that.uploadTraffic,_that.downloadTraffic,_that.expiredAt,_that.planId,_that.uuid,_that.avatarUrl,_that.plan);case _:
+return $default(_that.id,_that.email,_that.transferEnable,_that.uploadTraffic,_that.downloadTraffic,_that.expiredAt,_that.planId,_that.uuid,_that.avatarUrl,_that.balance,_that.plan);case _:
   return orElse();
 
 }
@@ -195,10 +196,10 @@ return $default(_that.id,_that.email,_that.transferEnable,_that.uploadTraffic,_t
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  String? email, @JsonKey(name: 'transfer_enable')  int? transferEnable, @JsonKey(name: 'u')  int? uploadTraffic, @JsonKey(name: 'd')  int? downloadTraffic, @JsonKey(name: 'expired_at')  int? expiredAt, @JsonKey(name: 'plan_id')  int? planId, @JsonKey(name: 'uuid')  String? uuid, @JsonKey(name: 'avatar_url')  String? avatarUrl,  V2BoardPlan? plan)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  String? email, @JsonKey(name: 'transfer_enable')  int? transferEnable, @JsonKey(name: 'u')  int? uploadTraffic, @JsonKey(name: 'd')  int? downloadTraffic, @JsonKey(name: 'expired_at')  int? expiredAt, @JsonKey(name: 'plan_id')  int? planId, @JsonKey(name: 'uuid')  String? uuid, @JsonKey(name: 'avatar_url')  String? avatarUrl,  int balance,  V2BoardPlan? plan)  $default,) {final _that = this;
 switch (_that) {
 case _V2BoardUser():
-return $default(_that.id,_that.email,_that.transferEnable,_that.uploadTraffic,_that.downloadTraffic,_that.expiredAt,_that.planId,_that.uuid,_that.avatarUrl,_that.plan);case _:
+return $default(_that.id,_that.email,_that.transferEnable,_that.uploadTraffic,_that.downloadTraffic,_that.expiredAt,_that.planId,_that.uuid,_that.avatarUrl,_that.balance,_that.plan);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -215,10 +216,10 @@ return $default(_that.id,_that.email,_that.transferEnable,_that.uploadTraffic,_t
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  String? email, @JsonKey(name: 'transfer_enable')  int? transferEnable, @JsonKey(name: 'u')  int? uploadTraffic, @JsonKey(name: 'd')  int? downloadTraffic, @JsonKey(name: 'expired_at')  int? expiredAt, @JsonKey(name: 'plan_id')  int? planId, @JsonKey(name: 'uuid')  String? uuid, @JsonKey(name: 'avatar_url')  String? avatarUrl,  V2BoardPlan? plan)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  String? email, @JsonKey(name: 'transfer_enable')  int? transferEnable, @JsonKey(name: 'u')  int? uploadTraffic, @JsonKey(name: 'd')  int? downloadTraffic, @JsonKey(name: 'expired_at')  int? expiredAt, @JsonKey(name: 'plan_id')  int? planId, @JsonKey(name: 'uuid')  String? uuid, @JsonKey(name: 'avatar_url')  String? avatarUrl,  int balance,  V2BoardPlan? plan)?  $default,) {final _that = this;
 switch (_that) {
 case _V2BoardUser() when $default != null:
-return $default(_that.id,_that.email,_that.transferEnable,_that.uploadTraffic,_that.downloadTraffic,_that.expiredAt,_that.planId,_that.uuid,_that.avatarUrl,_that.plan);case _:
+return $default(_that.id,_that.email,_that.transferEnable,_that.uploadTraffic,_that.downloadTraffic,_that.expiredAt,_that.planId,_that.uuid,_that.avatarUrl,_that.balance,_that.plan);case _:
   return null;
 
 }
@@ -230,7 +231,7 @@ return $default(_that.id,_that.email,_that.transferEnable,_that.uploadTraffic,_t
 @JsonSerializable()
 
 class _V2BoardUser implements V2BoardUser {
-  const _V2BoardUser({this.id = 0, this.email, @JsonKey(name: 'transfer_enable') this.transferEnable, @JsonKey(name: 'u') this.uploadTraffic, @JsonKey(name: 'd') this.downloadTraffic, @JsonKey(name: 'expired_at') this.expiredAt, @JsonKey(name: 'plan_id') this.planId, @JsonKey(name: 'uuid') this.uuid, @JsonKey(name: 'avatar_url') this.avatarUrl, this.plan});
+  const _V2BoardUser({this.id = 0, this.email, @JsonKey(name: 'transfer_enable') this.transferEnable, @JsonKey(name: 'u') this.uploadTraffic, @JsonKey(name: 'd') this.downloadTraffic, @JsonKey(name: 'expired_at') this.expiredAt, @JsonKey(name: 'plan_id') this.planId, @JsonKey(name: 'uuid') this.uuid, @JsonKey(name: 'avatar_url') this.avatarUrl, this.balance = 0, this.plan});
   factory _V2BoardUser.fromJson(Map<String, dynamic> json) => _$V2BoardUserFromJson(json);
 
 @override@JsonKey() final  int id;
@@ -242,6 +243,7 @@ class _V2BoardUser implements V2BoardUser {
 @override@JsonKey(name: 'plan_id') final  int? planId;
 @override@JsonKey(name: 'uuid') final  String? uuid;
 @override@JsonKey(name: 'avatar_url') final  String? avatarUrl;
+@override@JsonKey() final  int balance;
 @override final  V2BoardPlan? plan;
 
 /// Create a copy of V2BoardUser
@@ -257,16 +259,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _V2BoardUser&&(identical(other.id, id) || other.id == id)&&(identical(other.email, email) || other.email == email)&&(identical(other.transferEnable, transferEnable) || other.transferEnable == transferEnable)&&(identical(other.uploadTraffic, uploadTraffic) || other.uploadTraffic == uploadTraffic)&&(identical(other.downloadTraffic, downloadTraffic) || other.downloadTraffic == downloadTraffic)&&(identical(other.expiredAt, expiredAt) || other.expiredAt == expiredAt)&&(identical(other.planId, planId) || other.planId == planId)&&(identical(other.uuid, uuid) || other.uuid == uuid)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl)&&(identical(other.plan, plan) || other.plan == plan));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _V2BoardUser&&(identical(other.id, id) || other.id == id)&&(identical(other.email, email) || other.email == email)&&(identical(other.transferEnable, transferEnable) || other.transferEnable == transferEnable)&&(identical(other.uploadTraffic, uploadTraffic) || other.uploadTraffic == uploadTraffic)&&(identical(other.downloadTraffic, downloadTraffic) || other.downloadTraffic == downloadTraffic)&&(identical(other.expiredAt, expiredAt) || other.expiredAt == expiredAt)&&(identical(other.planId, planId) || other.planId == planId)&&(identical(other.uuid, uuid) || other.uuid == uuid)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl)&&(identical(other.balance, balance) || other.balance == balance)&&(identical(other.plan, plan) || other.plan == plan));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,email,transferEnable,uploadTraffic,downloadTraffic,expiredAt,planId,uuid,avatarUrl,plan);
+int get hashCode => Object.hash(runtimeType,id,email,transferEnable,uploadTraffic,downloadTraffic,expiredAt,planId,uuid,avatarUrl,balance,plan);
 
 @override
 String toString() {
-  return 'V2BoardUser(id: $id, email: $email, transferEnable: $transferEnable, uploadTraffic: $uploadTraffic, downloadTraffic: $downloadTraffic, expiredAt: $expiredAt, planId: $planId, uuid: $uuid, avatarUrl: $avatarUrl, plan: $plan)';
+  return 'V2BoardUser(id: $id, email: $email, transferEnable: $transferEnable, uploadTraffic: $uploadTraffic, downloadTraffic: $downloadTraffic, expiredAt: $expiredAt, planId: $planId, uuid: $uuid, avatarUrl: $avatarUrl, balance: $balance, plan: $plan)';
 }
 
 
@@ -277,7 +279,7 @@ abstract mixin class _$V2BoardUserCopyWith<$Res> implements $V2BoardUserCopyWith
   factory _$V2BoardUserCopyWith(_V2BoardUser value, $Res Function(_V2BoardUser) _then) = __$V2BoardUserCopyWithImpl;
 @override @useResult
 $Res call({
- int id, String? email,@JsonKey(name: 'transfer_enable') int? transferEnable,@JsonKey(name: 'u') int? uploadTraffic,@JsonKey(name: 'd') int? downloadTraffic,@JsonKey(name: 'expired_at') int? expiredAt,@JsonKey(name: 'plan_id') int? planId,@JsonKey(name: 'uuid') String? uuid,@JsonKey(name: 'avatar_url') String? avatarUrl, V2BoardPlan? plan
+ int id, String? email,@JsonKey(name: 'transfer_enable') int? transferEnable,@JsonKey(name: 'u') int? uploadTraffic,@JsonKey(name: 'd') int? downloadTraffic,@JsonKey(name: 'expired_at') int? expiredAt,@JsonKey(name: 'plan_id') int? planId,@JsonKey(name: 'uuid') String? uuid,@JsonKey(name: 'avatar_url') String? avatarUrl, int balance, V2BoardPlan? plan
 });
 
 
@@ -294,7 +296,7 @@ class __$V2BoardUserCopyWithImpl<$Res>
 
 /// Create a copy of V2BoardUser
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? email = freezed,Object? transferEnable = freezed,Object? uploadTraffic = freezed,Object? downloadTraffic = freezed,Object? expiredAt = freezed,Object? planId = freezed,Object? uuid = freezed,Object? avatarUrl = freezed,Object? plan = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? email = freezed,Object? transferEnable = freezed,Object? uploadTraffic = freezed,Object? downloadTraffic = freezed,Object? expiredAt = freezed,Object? planId = freezed,Object? uuid = freezed,Object? avatarUrl = freezed,Object? balance = null,Object? plan = freezed,}) {
   return _then(_V2BoardUser(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,email: freezed == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
@@ -305,7 +307,8 @@ as int?,expiredAt: freezed == expiredAt ? _self.expiredAt : expiredAt // ignore:
 as int?,planId: freezed == planId ? _self.planId : planId // ignore: cast_nullable_to_non_nullable
 as int?,uuid: freezed == uuid ? _self.uuid : uuid // ignore: cast_nullable_to_non_nullable
 as String?,avatarUrl: freezed == avatarUrl ? _self.avatarUrl : avatarUrl // ignore: cast_nullable_to_non_nullable
-as String?,plan: freezed == plan ? _self.plan : plan // ignore: cast_nullable_to_non_nullable
+as String?,balance: null == balance ? _self.balance : balance // ignore: cast_nullable_to_non_nullable
+as int,plan: freezed == plan ? _self.plan : plan // ignore: cast_nullable_to_non_nullable
 as V2BoardPlan?,
   ));
 }
@@ -329,7 +332,7 @@ $V2BoardPlanCopyWith<$Res>? get plan {
 /// @nodoc
 mixin _$V2BoardPlan {
 
- int get id; String? get name; int? get groupId;@JsonKey(name: 'transfer_enable') int? get transferEnable;@JsonKey(name: 'speed_limit') int? get speedLimit;
+ int get id; String? get name; String? get content;@JsonKey(name: 'group_id') int? get groupId;@JsonKey(name: 'transfer_enable') int? get transferEnable;@JsonKey(name: 'speed_limit') int? get speedLimit;@JsonKey(name: 'device_limit') int? get deviceLimit;@JsonKey(name: 'month_price') int? get monthPrice;@JsonKey(name: 'quarter_price') int? get quarterPrice;@JsonKey(name: 'half_year_price') int? get halfYearPrice;@JsonKey(name: 'year_price') int? get yearPrice;@JsonKey(name: 'two_year_price') int? get twoYearPrice;@JsonKey(name: 'three_year_price') int? get threeYearPrice;@JsonKey(name: 'onetime_price') int? get onetimePrice;@JsonKey(name: 'reset_price') int? get resetPrice; int? get show; int? get sort; int? get renew;
 /// Create a copy of V2BoardPlan
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -342,16 +345,16 @@ $V2BoardPlanCopyWith<V2BoardPlan> get copyWith => _$V2BoardPlanCopyWithImpl<V2Bo
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is V2BoardPlan&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.groupId, groupId) || other.groupId == groupId)&&(identical(other.transferEnable, transferEnable) || other.transferEnable == transferEnable)&&(identical(other.speedLimit, speedLimit) || other.speedLimit == speedLimit));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is V2BoardPlan&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.content, content) || other.content == content)&&(identical(other.groupId, groupId) || other.groupId == groupId)&&(identical(other.transferEnable, transferEnable) || other.transferEnable == transferEnable)&&(identical(other.speedLimit, speedLimit) || other.speedLimit == speedLimit)&&(identical(other.deviceLimit, deviceLimit) || other.deviceLimit == deviceLimit)&&(identical(other.monthPrice, monthPrice) || other.monthPrice == monthPrice)&&(identical(other.quarterPrice, quarterPrice) || other.quarterPrice == quarterPrice)&&(identical(other.halfYearPrice, halfYearPrice) || other.halfYearPrice == halfYearPrice)&&(identical(other.yearPrice, yearPrice) || other.yearPrice == yearPrice)&&(identical(other.twoYearPrice, twoYearPrice) || other.twoYearPrice == twoYearPrice)&&(identical(other.threeYearPrice, threeYearPrice) || other.threeYearPrice == threeYearPrice)&&(identical(other.onetimePrice, onetimePrice) || other.onetimePrice == onetimePrice)&&(identical(other.resetPrice, resetPrice) || other.resetPrice == resetPrice)&&(identical(other.show, show) || other.show == show)&&(identical(other.sort, sort) || other.sort == sort)&&(identical(other.renew, renew) || other.renew == renew));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,name,groupId,transferEnable,speedLimit);
+int get hashCode => Object.hash(runtimeType,id,name,content,groupId,transferEnable,speedLimit,deviceLimit,monthPrice,quarterPrice,halfYearPrice,yearPrice,twoYearPrice,threeYearPrice,onetimePrice,resetPrice,show,sort,renew);
 
 @override
 String toString() {
-  return 'V2BoardPlan(id: $id, name: $name, groupId: $groupId, transferEnable: $transferEnable, speedLimit: $speedLimit)';
+  return 'V2BoardPlan(id: $id, name: $name, content: $content, groupId: $groupId, transferEnable: $transferEnable, speedLimit: $speedLimit, deviceLimit: $deviceLimit, monthPrice: $monthPrice, quarterPrice: $quarterPrice, halfYearPrice: $halfYearPrice, yearPrice: $yearPrice, twoYearPrice: $twoYearPrice, threeYearPrice: $threeYearPrice, onetimePrice: $onetimePrice, resetPrice: $resetPrice, show: $show, sort: $sort, renew: $renew)';
 }
 
 
@@ -362,7 +365,7 @@ abstract mixin class $V2BoardPlanCopyWith<$Res>  {
   factory $V2BoardPlanCopyWith(V2BoardPlan value, $Res Function(V2BoardPlan) _then) = _$V2BoardPlanCopyWithImpl;
 @useResult
 $Res call({
- int id, String? name, int? groupId,@JsonKey(name: 'transfer_enable') int? transferEnable,@JsonKey(name: 'speed_limit') int? speedLimit
+ int id, String? name, String? content,@JsonKey(name: 'group_id') int? groupId,@JsonKey(name: 'transfer_enable') int? transferEnable,@JsonKey(name: 'speed_limit') int? speedLimit,@JsonKey(name: 'device_limit') int? deviceLimit,@JsonKey(name: 'month_price') int? monthPrice,@JsonKey(name: 'quarter_price') int? quarterPrice,@JsonKey(name: 'half_year_price') int? halfYearPrice,@JsonKey(name: 'year_price') int? yearPrice,@JsonKey(name: 'two_year_price') int? twoYearPrice,@JsonKey(name: 'three_year_price') int? threeYearPrice,@JsonKey(name: 'onetime_price') int? onetimePrice,@JsonKey(name: 'reset_price') int? resetPrice, int? show, int? sort, int? renew
 });
 
 
@@ -379,13 +382,26 @@ class _$V2BoardPlanCopyWithImpl<$Res>
 
 /// Create a copy of V2BoardPlan
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = freezed,Object? groupId = freezed,Object? transferEnable = freezed,Object? speedLimit = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = freezed,Object? content = freezed,Object? groupId = freezed,Object? transferEnable = freezed,Object? speedLimit = freezed,Object? deviceLimit = freezed,Object? monthPrice = freezed,Object? quarterPrice = freezed,Object? halfYearPrice = freezed,Object? yearPrice = freezed,Object? twoYearPrice = freezed,Object? threeYearPrice = freezed,Object? onetimePrice = freezed,Object? resetPrice = freezed,Object? show = freezed,Object? sort = freezed,Object? renew = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,name: freezed == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+as String?,content: freezed == content ? _self.content : content // ignore: cast_nullable_to_non_nullable
 as String?,groupId: freezed == groupId ? _self.groupId : groupId // ignore: cast_nullable_to_non_nullable
 as int?,transferEnable: freezed == transferEnable ? _self.transferEnable : transferEnable // ignore: cast_nullable_to_non_nullable
 as int?,speedLimit: freezed == speedLimit ? _self.speedLimit : speedLimit // ignore: cast_nullable_to_non_nullable
+as int?,deviceLimit: freezed == deviceLimit ? _self.deviceLimit : deviceLimit // ignore: cast_nullable_to_non_nullable
+as int?,monthPrice: freezed == monthPrice ? _self.monthPrice : monthPrice // ignore: cast_nullable_to_non_nullable
+as int?,quarterPrice: freezed == quarterPrice ? _self.quarterPrice : quarterPrice // ignore: cast_nullable_to_non_nullable
+as int?,halfYearPrice: freezed == halfYearPrice ? _self.halfYearPrice : halfYearPrice // ignore: cast_nullable_to_non_nullable
+as int?,yearPrice: freezed == yearPrice ? _self.yearPrice : yearPrice // ignore: cast_nullable_to_non_nullable
+as int?,twoYearPrice: freezed == twoYearPrice ? _self.twoYearPrice : twoYearPrice // ignore: cast_nullable_to_non_nullable
+as int?,threeYearPrice: freezed == threeYearPrice ? _self.threeYearPrice : threeYearPrice // ignore: cast_nullable_to_non_nullable
+as int?,onetimePrice: freezed == onetimePrice ? _self.onetimePrice : onetimePrice // ignore: cast_nullable_to_non_nullable
+as int?,resetPrice: freezed == resetPrice ? _self.resetPrice : resetPrice // ignore: cast_nullable_to_non_nullable
+as int?,show: freezed == show ? _self.show : show // ignore: cast_nullable_to_non_nullable
+as int?,sort: freezed == sort ? _self.sort : sort // ignore: cast_nullable_to_non_nullable
+as int?,renew: freezed == renew ? _self.renew : renew // ignore: cast_nullable_to_non_nullable
 as int?,
   ));
 }
@@ -471,10 +487,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  String? name,  int? groupId, @JsonKey(name: 'transfer_enable')  int? transferEnable, @JsonKey(name: 'speed_limit')  int? speedLimit)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  String? name,  String? content, @JsonKey(name: 'group_id')  int? groupId, @JsonKey(name: 'transfer_enable')  int? transferEnable, @JsonKey(name: 'speed_limit')  int? speedLimit, @JsonKey(name: 'device_limit')  int? deviceLimit, @JsonKey(name: 'month_price')  int? monthPrice, @JsonKey(name: 'quarter_price')  int? quarterPrice, @JsonKey(name: 'half_year_price')  int? halfYearPrice, @JsonKey(name: 'year_price')  int? yearPrice, @JsonKey(name: 'two_year_price')  int? twoYearPrice, @JsonKey(name: 'three_year_price')  int? threeYearPrice, @JsonKey(name: 'onetime_price')  int? onetimePrice, @JsonKey(name: 'reset_price')  int? resetPrice,  int? show,  int? sort,  int? renew)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _V2BoardPlan() when $default != null:
-return $default(_that.id,_that.name,_that.groupId,_that.transferEnable,_that.speedLimit);case _:
+return $default(_that.id,_that.name,_that.content,_that.groupId,_that.transferEnable,_that.speedLimit,_that.deviceLimit,_that.monthPrice,_that.quarterPrice,_that.halfYearPrice,_that.yearPrice,_that.twoYearPrice,_that.threeYearPrice,_that.onetimePrice,_that.resetPrice,_that.show,_that.sort,_that.renew);case _:
   return orElse();
 
 }
@@ -492,10 +508,10 @@ return $default(_that.id,_that.name,_that.groupId,_that.transferEnable,_that.spe
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  String? name,  int? groupId, @JsonKey(name: 'transfer_enable')  int? transferEnable, @JsonKey(name: 'speed_limit')  int? speedLimit)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  String? name,  String? content, @JsonKey(name: 'group_id')  int? groupId, @JsonKey(name: 'transfer_enable')  int? transferEnable, @JsonKey(name: 'speed_limit')  int? speedLimit, @JsonKey(name: 'device_limit')  int? deviceLimit, @JsonKey(name: 'month_price')  int? monthPrice, @JsonKey(name: 'quarter_price')  int? quarterPrice, @JsonKey(name: 'half_year_price')  int? halfYearPrice, @JsonKey(name: 'year_price')  int? yearPrice, @JsonKey(name: 'two_year_price')  int? twoYearPrice, @JsonKey(name: 'three_year_price')  int? threeYearPrice, @JsonKey(name: 'onetime_price')  int? onetimePrice, @JsonKey(name: 'reset_price')  int? resetPrice,  int? show,  int? sort,  int? renew)  $default,) {final _that = this;
 switch (_that) {
 case _V2BoardPlan():
-return $default(_that.id,_that.name,_that.groupId,_that.transferEnable,_that.speedLimit);case _:
+return $default(_that.id,_that.name,_that.content,_that.groupId,_that.transferEnable,_that.speedLimit,_that.deviceLimit,_that.monthPrice,_that.quarterPrice,_that.halfYearPrice,_that.yearPrice,_that.twoYearPrice,_that.threeYearPrice,_that.onetimePrice,_that.resetPrice,_that.show,_that.sort,_that.renew);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -512,10 +528,10 @@ return $default(_that.id,_that.name,_that.groupId,_that.transferEnable,_that.spe
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  String? name,  int? groupId, @JsonKey(name: 'transfer_enable')  int? transferEnable, @JsonKey(name: 'speed_limit')  int? speedLimit)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  String? name,  String? content, @JsonKey(name: 'group_id')  int? groupId, @JsonKey(name: 'transfer_enable')  int? transferEnable, @JsonKey(name: 'speed_limit')  int? speedLimit, @JsonKey(name: 'device_limit')  int? deviceLimit, @JsonKey(name: 'month_price')  int? monthPrice, @JsonKey(name: 'quarter_price')  int? quarterPrice, @JsonKey(name: 'half_year_price')  int? halfYearPrice, @JsonKey(name: 'year_price')  int? yearPrice, @JsonKey(name: 'two_year_price')  int? twoYearPrice, @JsonKey(name: 'three_year_price')  int? threeYearPrice, @JsonKey(name: 'onetime_price')  int? onetimePrice, @JsonKey(name: 'reset_price')  int? resetPrice,  int? show,  int? sort,  int? renew)?  $default,) {final _that = this;
 switch (_that) {
 case _V2BoardPlan() when $default != null:
-return $default(_that.id,_that.name,_that.groupId,_that.transferEnable,_that.speedLimit);case _:
+return $default(_that.id,_that.name,_that.content,_that.groupId,_that.transferEnable,_that.speedLimit,_that.deviceLimit,_that.monthPrice,_that.quarterPrice,_that.halfYearPrice,_that.yearPrice,_that.twoYearPrice,_that.threeYearPrice,_that.onetimePrice,_that.resetPrice,_that.show,_that.sort,_that.renew);case _:
   return null;
 
 }
@@ -527,14 +543,27 @@ return $default(_that.id,_that.name,_that.groupId,_that.transferEnable,_that.spe
 @JsonSerializable()
 
 class _V2BoardPlan implements V2BoardPlan {
-  const _V2BoardPlan({required this.id, this.name, this.groupId, @JsonKey(name: 'transfer_enable') this.transferEnable, @JsonKey(name: 'speed_limit') this.speedLimit});
+  const _V2BoardPlan({required this.id, this.name, this.content, @JsonKey(name: 'group_id') this.groupId, @JsonKey(name: 'transfer_enable') this.transferEnable, @JsonKey(name: 'speed_limit') this.speedLimit, @JsonKey(name: 'device_limit') this.deviceLimit, @JsonKey(name: 'month_price') this.monthPrice, @JsonKey(name: 'quarter_price') this.quarterPrice, @JsonKey(name: 'half_year_price') this.halfYearPrice, @JsonKey(name: 'year_price') this.yearPrice, @JsonKey(name: 'two_year_price') this.twoYearPrice, @JsonKey(name: 'three_year_price') this.threeYearPrice, @JsonKey(name: 'onetime_price') this.onetimePrice, @JsonKey(name: 'reset_price') this.resetPrice, this.show, this.sort, this.renew});
   factory _V2BoardPlan.fromJson(Map<String, dynamic> json) => _$V2BoardPlanFromJson(json);
 
 @override final  int id;
 @override final  String? name;
-@override final  int? groupId;
+@override final  String? content;
+@override@JsonKey(name: 'group_id') final  int? groupId;
 @override@JsonKey(name: 'transfer_enable') final  int? transferEnable;
 @override@JsonKey(name: 'speed_limit') final  int? speedLimit;
+@override@JsonKey(name: 'device_limit') final  int? deviceLimit;
+@override@JsonKey(name: 'month_price') final  int? monthPrice;
+@override@JsonKey(name: 'quarter_price') final  int? quarterPrice;
+@override@JsonKey(name: 'half_year_price') final  int? halfYearPrice;
+@override@JsonKey(name: 'year_price') final  int? yearPrice;
+@override@JsonKey(name: 'two_year_price') final  int? twoYearPrice;
+@override@JsonKey(name: 'three_year_price') final  int? threeYearPrice;
+@override@JsonKey(name: 'onetime_price') final  int? onetimePrice;
+@override@JsonKey(name: 'reset_price') final  int? resetPrice;
+@override final  int? show;
+@override final  int? sort;
+@override final  int? renew;
 
 /// Create a copy of V2BoardPlan
 /// with the given fields replaced by the non-null parameter values.
@@ -549,16 +578,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _V2BoardPlan&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.groupId, groupId) || other.groupId == groupId)&&(identical(other.transferEnable, transferEnable) || other.transferEnable == transferEnable)&&(identical(other.speedLimit, speedLimit) || other.speedLimit == speedLimit));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _V2BoardPlan&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.content, content) || other.content == content)&&(identical(other.groupId, groupId) || other.groupId == groupId)&&(identical(other.transferEnable, transferEnable) || other.transferEnable == transferEnable)&&(identical(other.speedLimit, speedLimit) || other.speedLimit == speedLimit)&&(identical(other.deviceLimit, deviceLimit) || other.deviceLimit == deviceLimit)&&(identical(other.monthPrice, monthPrice) || other.monthPrice == monthPrice)&&(identical(other.quarterPrice, quarterPrice) || other.quarterPrice == quarterPrice)&&(identical(other.halfYearPrice, halfYearPrice) || other.halfYearPrice == halfYearPrice)&&(identical(other.yearPrice, yearPrice) || other.yearPrice == yearPrice)&&(identical(other.twoYearPrice, twoYearPrice) || other.twoYearPrice == twoYearPrice)&&(identical(other.threeYearPrice, threeYearPrice) || other.threeYearPrice == threeYearPrice)&&(identical(other.onetimePrice, onetimePrice) || other.onetimePrice == onetimePrice)&&(identical(other.resetPrice, resetPrice) || other.resetPrice == resetPrice)&&(identical(other.show, show) || other.show == show)&&(identical(other.sort, sort) || other.sort == sort)&&(identical(other.renew, renew) || other.renew == renew));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,name,groupId,transferEnable,speedLimit);
+int get hashCode => Object.hash(runtimeType,id,name,content,groupId,transferEnable,speedLimit,deviceLimit,monthPrice,quarterPrice,halfYearPrice,yearPrice,twoYearPrice,threeYearPrice,onetimePrice,resetPrice,show,sort,renew);
 
 @override
 String toString() {
-  return 'V2BoardPlan(id: $id, name: $name, groupId: $groupId, transferEnable: $transferEnable, speedLimit: $speedLimit)';
+  return 'V2BoardPlan(id: $id, name: $name, content: $content, groupId: $groupId, transferEnable: $transferEnable, speedLimit: $speedLimit, deviceLimit: $deviceLimit, monthPrice: $monthPrice, quarterPrice: $quarterPrice, halfYearPrice: $halfYearPrice, yearPrice: $yearPrice, twoYearPrice: $twoYearPrice, threeYearPrice: $threeYearPrice, onetimePrice: $onetimePrice, resetPrice: $resetPrice, show: $show, sort: $sort, renew: $renew)';
 }
 
 
@@ -569,7 +598,7 @@ abstract mixin class _$V2BoardPlanCopyWith<$Res> implements $V2BoardPlanCopyWith
   factory _$V2BoardPlanCopyWith(_V2BoardPlan value, $Res Function(_V2BoardPlan) _then) = __$V2BoardPlanCopyWithImpl;
 @override @useResult
 $Res call({
- int id, String? name, int? groupId,@JsonKey(name: 'transfer_enable') int? transferEnable,@JsonKey(name: 'speed_limit') int? speedLimit
+ int id, String? name, String? content,@JsonKey(name: 'group_id') int? groupId,@JsonKey(name: 'transfer_enable') int? transferEnable,@JsonKey(name: 'speed_limit') int? speedLimit,@JsonKey(name: 'device_limit') int? deviceLimit,@JsonKey(name: 'month_price') int? monthPrice,@JsonKey(name: 'quarter_price') int? quarterPrice,@JsonKey(name: 'half_year_price') int? halfYearPrice,@JsonKey(name: 'year_price') int? yearPrice,@JsonKey(name: 'two_year_price') int? twoYearPrice,@JsonKey(name: 'three_year_price') int? threeYearPrice,@JsonKey(name: 'onetime_price') int? onetimePrice,@JsonKey(name: 'reset_price') int? resetPrice, int? show, int? sort, int? renew
 });
 
 
@@ -586,18 +615,336 @@ class __$V2BoardPlanCopyWithImpl<$Res>
 
 /// Create a copy of V2BoardPlan
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = freezed,Object? groupId = freezed,Object? transferEnable = freezed,Object? speedLimit = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = freezed,Object? content = freezed,Object? groupId = freezed,Object? transferEnable = freezed,Object? speedLimit = freezed,Object? deviceLimit = freezed,Object? monthPrice = freezed,Object? quarterPrice = freezed,Object? halfYearPrice = freezed,Object? yearPrice = freezed,Object? twoYearPrice = freezed,Object? threeYearPrice = freezed,Object? onetimePrice = freezed,Object? resetPrice = freezed,Object? show = freezed,Object? sort = freezed,Object? renew = freezed,}) {
   return _then(_V2BoardPlan(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,name: freezed == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+as String?,content: freezed == content ? _self.content : content // ignore: cast_nullable_to_non_nullable
 as String?,groupId: freezed == groupId ? _self.groupId : groupId // ignore: cast_nullable_to_non_nullable
 as int?,transferEnable: freezed == transferEnable ? _self.transferEnable : transferEnable // ignore: cast_nullable_to_non_nullable
 as int?,speedLimit: freezed == speedLimit ? _self.speedLimit : speedLimit // ignore: cast_nullable_to_non_nullable
+as int?,deviceLimit: freezed == deviceLimit ? _self.deviceLimit : deviceLimit // ignore: cast_nullable_to_non_nullable
+as int?,monthPrice: freezed == monthPrice ? _self.monthPrice : monthPrice // ignore: cast_nullable_to_non_nullable
+as int?,quarterPrice: freezed == quarterPrice ? _self.quarterPrice : quarterPrice // ignore: cast_nullable_to_non_nullable
+as int?,halfYearPrice: freezed == halfYearPrice ? _self.halfYearPrice : halfYearPrice // ignore: cast_nullable_to_non_nullable
+as int?,yearPrice: freezed == yearPrice ? _self.yearPrice : yearPrice // ignore: cast_nullable_to_non_nullable
+as int?,twoYearPrice: freezed == twoYearPrice ? _self.twoYearPrice : twoYearPrice // ignore: cast_nullable_to_non_nullable
+as int?,threeYearPrice: freezed == threeYearPrice ? _self.threeYearPrice : threeYearPrice // ignore: cast_nullable_to_non_nullable
+as int?,onetimePrice: freezed == onetimePrice ? _self.onetimePrice : onetimePrice // ignore: cast_nullable_to_non_nullable
+as int?,resetPrice: freezed == resetPrice ? _self.resetPrice : resetPrice // ignore: cast_nullable_to_non_nullable
+as int?,show: freezed == show ? _self.show : show // ignore: cast_nullable_to_non_nullable
+as int?,sort: freezed == sort ? _self.sort : sort // ignore: cast_nullable_to_non_nullable
+as int?,renew: freezed == renew ? _self.renew : renew // ignore: cast_nullable_to_non_nullable
 as int?,
   ));
 }
 
 
+}
+
+
+/// @nodoc
+mixin _$V2BoardOrder {
+
+@JsonKey(name: 'trade_no') String? get tradeNo;@JsonKey(name: 'plan_id') int? get planId; String? get cycle;@JsonKey(name: 'total_amount') int? get totalAmount; int? get status;@JsonKey(name: 'created_at') int? get createdAt; V2BoardPlan? get plan;
+/// Create a copy of V2BoardOrder
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$V2BoardOrderCopyWith<V2BoardOrder> get copyWith => _$V2BoardOrderCopyWithImpl<V2BoardOrder>(this as V2BoardOrder, _$identity);
+
+  /// Serializes this V2BoardOrder to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is V2BoardOrder&&(identical(other.tradeNo, tradeNo) || other.tradeNo == tradeNo)&&(identical(other.planId, planId) || other.planId == planId)&&(identical(other.cycle, cycle) || other.cycle == cycle)&&(identical(other.totalAmount, totalAmount) || other.totalAmount == totalAmount)&&(identical(other.status, status) || other.status == status)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.plan, plan) || other.plan == plan));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,tradeNo,planId,cycle,totalAmount,status,createdAt,plan);
+
+@override
+String toString() {
+  return 'V2BoardOrder(tradeNo: $tradeNo, planId: $planId, cycle: $cycle, totalAmount: $totalAmount, status: $status, createdAt: $createdAt, plan: $plan)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $V2BoardOrderCopyWith<$Res>  {
+  factory $V2BoardOrderCopyWith(V2BoardOrder value, $Res Function(V2BoardOrder) _then) = _$V2BoardOrderCopyWithImpl;
+@useResult
+$Res call({
+@JsonKey(name: 'trade_no') String? tradeNo,@JsonKey(name: 'plan_id') int? planId, String? cycle,@JsonKey(name: 'total_amount') int? totalAmount, int? status,@JsonKey(name: 'created_at') int? createdAt, V2BoardPlan? plan
+});
+
+
+$V2BoardPlanCopyWith<$Res>? get plan;
+
+}
+/// @nodoc
+class _$V2BoardOrderCopyWithImpl<$Res>
+    implements $V2BoardOrderCopyWith<$Res> {
+  _$V2BoardOrderCopyWithImpl(this._self, this._then);
+
+  final V2BoardOrder _self;
+  final $Res Function(V2BoardOrder) _then;
+
+/// Create a copy of V2BoardOrder
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? tradeNo = freezed,Object? planId = freezed,Object? cycle = freezed,Object? totalAmount = freezed,Object? status = freezed,Object? createdAt = freezed,Object? plan = freezed,}) {
+  return _then(_self.copyWith(
+tradeNo: freezed == tradeNo ? _self.tradeNo : tradeNo // ignore: cast_nullable_to_non_nullable
+as String?,planId: freezed == planId ? _self.planId : planId // ignore: cast_nullable_to_non_nullable
+as int?,cycle: freezed == cycle ? _self.cycle : cycle // ignore: cast_nullable_to_non_nullable
+as String?,totalAmount: freezed == totalAmount ? _self.totalAmount : totalAmount // ignore: cast_nullable_to_non_nullable
+as int?,status: freezed == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
+as int?,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as int?,plan: freezed == plan ? _self.plan : plan // ignore: cast_nullable_to_non_nullable
+as V2BoardPlan?,
+  ));
+}
+/// Create a copy of V2BoardOrder
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$V2BoardPlanCopyWith<$Res>? get plan {
+    if (_self.plan == null) {
+    return null;
+  }
+
+  return $V2BoardPlanCopyWith<$Res>(_self.plan!, (value) {
+    return _then(_self.copyWith(plan: value));
+  });
+}
+}
+
+
+/// Adds pattern-matching-related methods to [V2BoardOrder].
+extension V2BoardOrderPatterns on V2BoardOrder {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _V2BoardOrder value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _V2BoardOrder() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _V2BoardOrder value)  $default,){
+final _that = this;
+switch (_that) {
+case _V2BoardOrder():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _V2BoardOrder value)?  $default,){
+final _that = this;
+switch (_that) {
+case _V2BoardOrder() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'trade_no')  String? tradeNo, @JsonKey(name: 'plan_id')  int? planId,  String? cycle, @JsonKey(name: 'total_amount')  int? totalAmount,  int? status, @JsonKey(name: 'created_at')  int? createdAt,  V2BoardPlan? plan)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _V2BoardOrder() when $default != null:
+return $default(_that.tradeNo,_that.planId,_that.cycle,_that.totalAmount,_that.status,_that.createdAt,_that.plan);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'trade_no')  String? tradeNo, @JsonKey(name: 'plan_id')  int? planId,  String? cycle, @JsonKey(name: 'total_amount')  int? totalAmount,  int? status, @JsonKey(name: 'created_at')  int? createdAt,  V2BoardPlan? plan)  $default,) {final _that = this;
+switch (_that) {
+case _V2BoardOrder():
+return $default(_that.tradeNo,_that.planId,_that.cycle,_that.totalAmount,_that.status,_that.createdAt,_that.plan);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'trade_no')  String? tradeNo, @JsonKey(name: 'plan_id')  int? planId,  String? cycle, @JsonKey(name: 'total_amount')  int? totalAmount,  int? status, @JsonKey(name: 'created_at')  int? createdAt,  V2BoardPlan? plan)?  $default,) {final _that = this;
+switch (_that) {
+case _V2BoardOrder() when $default != null:
+return $default(_that.tradeNo,_that.planId,_that.cycle,_that.totalAmount,_that.status,_that.createdAt,_that.plan);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+@JsonSerializable()
+
+class _V2BoardOrder implements V2BoardOrder {
+  const _V2BoardOrder({@JsonKey(name: 'trade_no') this.tradeNo, @JsonKey(name: 'plan_id') this.planId, this.cycle, @JsonKey(name: 'total_amount') this.totalAmount, this.status, @JsonKey(name: 'created_at') this.createdAt, this.plan});
+  factory _V2BoardOrder.fromJson(Map<String, dynamic> json) => _$V2BoardOrderFromJson(json);
+
+@override@JsonKey(name: 'trade_no') final  String? tradeNo;
+@override@JsonKey(name: 'plan_id') final  int? planId;
+@override final  String? cycle;
+@override@JsonKey(name: 'total_amount') final  int? totalAmount;
+@override final  int? status;
+@override@JsonKey(name: 'created_at') final  int? createdAt;
+@override final  V2BoardPlan? plan;
+
+/// Create a copy of V2BoardOrder
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$V2BoardOrderCopyWith<_V2BoardOrder> get copyWith => __$V2BoardOrderCopyWithImpl<_V2BoardOrder>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$V2BoardOrderToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _V2BoardOrder&&(identical(other.tradeNo, tradeNo) || other.tradeNo == tradeNo)&&(identical(other.planId, planId) || other.planId == planId)&&(identical(other.cycle, cycle) || other.cycle == cycle)&&(identical(other.totalAmount, totalAmount) || other.totalAmount == totalAmount)&&(identical(other.status, status) || other.status == status)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.plan, plan) || other.plan == plan));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,tradeNo,planId,cycle,totalAmount,status,createdAt,plan);
+
+@override
+String toString() {
+  return 'V2BoardOrder(tradeNo: $tradeNo, planId: $planId, cycle: $cycle, totalAmount: $totalAmount, status: $status, createdAt: $createdAt, plan: $plan)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$V2BoardOrderCopyWith<$Res> implements $V2BoardOrderCopyWith<$Res> {
+  factory _$V2BoardOrderCopyWith(_V2BoardOrder value, $Res Function(_V2BoardOrder) _then) = __$V2BoardOrderCopyWithImpl;
+@override @useResult
+$Res call({
+@JsonKey(name: 'trade_no') String? tradeNo,@JsonKey(name: 'plan_id') int? planId, String? cycle,@JsonKey(name: 'total_amount') int? totalAmount, int? status,@JsonKey(name: 'created_at') int? createdAt, V2BoardPlan? plan
+});
+
+
+@override $V2BoardPlanCopyWith<$Res>? get plan;
+
+}
+/// @nodoc
+class __$V2BoardOrderCopyWithImpl<$Res>
+    implements _$V2BoardOrderCopyWith<$Res> {
+  __$V2BoardOrderCopyWithImpl(this._self, this._then);
+
+  final _V2BoardOrder _self;
+  final $Res Function(_V2BoardOrder) _then;
+
+/// Create a copy of V2BoardOrder
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? tradeNo = freezed,Object? planId = freezed,Object? cycle = freezed,Object? totalAmount = freezed,Object? status = freezed,Object? createdAt = freezed,Object? plan = freezed,}) {
+  return _then(_V2BoardOrder(
+tradeNo: freezed == tradeNo ? _self.tradeNo : tradeNo // ignore: cast_nullable_to_non_nullable
+as String?,planId: freezed == planId ? _self.planId : planId // ignore: cast_nullable_to_non_nullable
+as int?,cycle: freezed == cycle ? _self.cycle : cycle // ignore: cast_nullable_to_non_nullable
+as String?,totalAmount: freezed == totalAmount ? _self.totalAmount : totalAmount // ignore: cast_nullable_to_non_nullable
+as int?,status: freezed == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
+as int?,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as int?,plan: freezed == plan ? _self.plan : plan // ignore: cast_nullable_to_non_nullable
+as V2BoardPlan?,
+  ));
+}
+
+/// Create a copy of V2BoardOrder
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$V2BoardPlanCopyWith<$Res>? get plan {
+    if (_self.plan == null) {
+    return null;
+  }
+
+  return $V2BoardPlanCopyWith<$Res>(_self.plan!, (value) {
+    return _then(_self.copyWith(plan: value));
+  });
+}
 }
 
 

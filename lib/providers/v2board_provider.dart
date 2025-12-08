@@ -8,6 +8,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:fl_clash/models/profile.dart';
 import 'package:fl_clash/providers/config.dart';
+import 'package:fl_clash/state.dart';
 
 part 'generated/v2board_provider.g.dart';
 
@@ -117,6 +118,22 @@ class UserSubscription extends _$UserSubscription {
     try {
       final subscription = await v2boardApi.getSubscription();
       state = AsyncValue.data(subscription);
+      
+      // Auto-sync subscribe URL
+      if (subscription?.subscribeUrl != null && subscription!.subscribeUrl!.isNotEmpty) {
+        final profiles = ref.read(profilesProvider);
+        final index = profiles.indexWhere((p) => p.label == 'TaiSafe Auto');
+        
+        if (index != -1) {
+          final profile = profiles[index];
+          if (profile.url != subscription.subscribeUrl) {
+            print('[UserSubscription] URL changed, updating profile...');
+            final newProfile = profile.copyWith(url: subscription.subscribeUrl!);
+            // Use appController to update which also handles persistence
+            globalState.appController.updateProfile(newProfile);
+          }
+        }
+      }
     } catch (e) {
       state = AsyncValue.error(e, StackTrace.current);
     }
@@ -373,5 +390,192 @@ class RegisterAction extends _$RegisterAction {
       state = AsyncValue.error(e, StackTrace.current);
       return false;
     }
+  }
+}
+
+// ============ Shop State ============
+
+/// Available plans
+@Riverpod(keepAlive: true)
+class Plans extends _$Plans {
+  @override
+  AsyncValue<List<V2BoardPlan>> build() {
+    return const AsyncValue.data([]);
+  }
+  
+  Future<void> fetch() async {
+    if (!ref.read(isLoggedInProvider)) {
+      state = const AsyncValue.data([]);
+      return;
+    }
+    
+    state = const AsyncValue.loading();
+    try {
+      final plans = await v2boardApi.getPlans();
+      // Filter only visible plans
+      final visiblePlans = plans.where((p) => p.show == 1).toList();
+      // Sort by sort field
+      visiblePlans.sort((a, b) => (a.sort ?? 0).compareTo(b.sort ?? 0));
+      state = AsyncValue.data(visiblePlans);
+    } catch (e) {
+      state = AsyncValue.error(e, StackTrace.current);
+    }
+  }
+  
+  void clear() {
+    state = const AsyncValue.data([]);
+  }
+}
+
+/// Gift card redemption action
+@Riverpod(keepAlive: true)
+class RedeemGiftCard extends _$RedeemGiftCard {
+  @override
+  AsyncValue<String?> build() {
+    return const AsyncValue.data(null);
+  }
+  
+  Future<bool> redeem(String code) async {
+    state = const AsyncValue.loading();
+    try {
+      final result = await v2boardApi.redeemGiftCard(code);
+      final message = result['message'] ?? '兌換成功';
+      state = AsyncValue.data(message as String);
+      
+      // Refresh user info to update balance
+      await ref.read(currentUserProvider.notifier).fetch();
+      
+      return true;
+    } catch (e) {
+      state = AsyncValue.error(e, StackTrace.current);
+      return false;
+    }
+  }
+  
+  void reset() {
+    state = const AsyncValue.data(null);
+  }
+}
+
+/// Purchase plan action
+@Riverpod(keepAlive: true)
+class PurchasePlan extends _$PurchasePlan {
+  @override
+  AsyncValue<String?> build() {
+    return const AsyncValue.data(null);
+  }
+  
+  Future<bool> purchase({
+    required int planId,
+    required String cycle,
+    String? couponCode,
+  }) async {
+    state = const AsyncValue.loading();
+    try {
+      // Create order
+      final order = await v2boardApi.createOrder(
+        planId: planId,
+        cycle: cycle,
+        couponCode: couponCode,
+      );
+      
+      if (order.tradeNo == null) {
+        state = AsyncValue.error('創建訂單失敗', StackTrace.current);
+        return false;
+      }
+      
+      // Checkout with balance
+      final result = await v2boardApi.checkoutOrder(order.tradeNo!);
+      final message = result['message'] ?? '購買成功';
+      state = AsyncValue.data(message as String);
+      
+      // Refresh user info and subscription
+      await ref.read(currentUserProvider.notifier).fetch();
+      await ref.read(userSubscriptionProvider.notifier).fetch();
+      
+      return true;
+    } catch (e) {
+      state = AsyncValue.error(e, StackTrace.current);
+      return false;
+    }
+  }
+  
+  void reset() {
+    state = const AsyncValue.data(null);
+  }
+}
+
+/// User orders
+@Riverpod(keepAlive: true)
+class Orders extends _$Orders {
+  @override
+  AsyncValue<List<V2BoardOrder>> build() {
+    return const AsyncValue.data([]);
+  }
+  
+  Future<void> fetch() async {
+    if (!ref.read(isLoggedInProvider)) {
+      state = const AsyncValue.data([]);
+      return;
+    }
+    
+    state = const AsyncValue.loading();
+    try {
+      final orders = await v2boardApi.getOrders();
+      // Sort by creation time desc
+      orders.sort((a, b) => (b.createdAt ?? 0).compareTo(a.createdAt ?? 0));
+      state = AsyncValue.data(orders);
+    } catch (e) {
+      state = AsyncValue.error(e, StackTrace.current);
+    }
+  }
+  
+  void clear() {
+    state = const AsyncValue.data([]);
+  }
+}
+
+/// Order actions (cancel, checkout)
+@Riverpod(keepAlive: true)
+class OrderAction extends _$OrderAction {
+  @override
+  AsyncValue<String?> build() {
+    return const AsyncValue.data(null);
+  }
+  
+  Future<bool> cancel(String tradeNo) async {
+    state = const AsyncValue.loading();
+    try {
+      await v2boardApi.cancelOrder(tradeNo);
+      state = const AsyncValue.data('訂單已取消');
+      await ref.read(ordersProvider.notifier).fetch();
+      return true;
+    } catch (e) {
+      state = AsyncValue.error(e, StackTrace.current);
+      return false;
+    }
+  }
+  
+  Future<bool> checkout(String tradeNo) async {
+    state = const AsyncValue.loading();
+    try {
+      final result = await v2boardApi.checkoutOrder(tradeNo);
+      final message = result['message'] ?? '支付成功';
+      state = AsyncValue.data(message as String);
+      
+      // Refresh user info and orders
+      await ref.read(currentUserProvider.notifier).fetch();
+      await ref.read(ordersProvider.notifier).fetch();
+      await ref.read(userSubscriptionProvider.notifier).fetch();
+      
+      return true;
+    } catch (e) {
+      state = AsyncValue.error(e, StackTrace.current);
+      return false;
+    }
+  }
+  
+  void reset() {
+    state = const AsyncValue.data(null);
   }
 }

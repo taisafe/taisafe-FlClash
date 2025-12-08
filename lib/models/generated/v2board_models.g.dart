@@ -16,6 +16,7 @@ _V2BoardUser _$V2BoardUserFromJson(Map<String, dynamic> json) => _V2BoardUser(
   planId: (json['plan_id'] as num?)?.toInt(),
   uuid: json['uuid'] as String?,
   avatarUrl: json['avatar_url'] as String?,
+  balance: (json['balance'] as num?)?.toInt() ?? 0,
   plan: json['plan'] == null
       ? null
       : V2BoardPlan.fromJson(json['plan'] as Map<String, dynamic>),
@@ -32,24 +33,75 @@ Map<String, dynamic> _$V2BoardUserToJson(_V2BoardUser instance) =>
       'plan_id': instance.planId,
       'uuid': instance.uuid,
       'avatar_url': instance.avatarUrl,
+      'balance': instance.balance,
       'plan': instance.plan,
     };
 
 _V2BoardPlan _$V2BoardPlanFromJson(Map<String, dynamic> json) => _V2BoardPlan(
   id: (json['id'] as num).toInt(),
   name: json['name'] as String?,
-  groupId: (json['groupId'] as num?)?.toInt(),
+  content: json['content'] as String?,
+  groupId: (json['group_id'] as num?)?.toInt(),
   transferEnable: (json['transfer_enable'] as num?)?.toInt(),
   speedLimit: (json['speed_limit'] as num?)?.toInt(),
+  deviceLimit: (json['device_limit'] as num?)?.toInt(),
+  monthPrice: (json['month_price'] as num?)?.toInt(),
+  quarterPrice: (json['quarter_price'] as num?)?.toInt(),
+  halfYearPrice: (json['half_year_price'] as num?)?.toInt(),
+  yearPrice: (json['year_price'] as num?)?.toInt(),
+  twoYearPrice: (json['two_year_price'] as num?)?.toInt(),
+  threeYearPrice: (json['three_year_price'] as num?)?.toInt(),
+  onetimePrice: (json['onetime_price'] as num?)?.toInt(),
+  resetPrice: (json['reset_price'] as num?)?.toInt(),
+  show: (json['show'] as num?)?.toInt(),
+  sort: (json['sort'] as num?)?.toInt(),
+  renew: (json['renew'] as num?)?.toInt(),
 );
 
 Map<String, dynamic> _$V2BoardPlanToJson(_V2BoardPlan instance) =>
     <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
-      'groupId': instance.groupId,
+      'content': instance.content,
+      'group_id': instance.groupId,
       'transfer_enable': instance.transferEnable,
       'speed_limit': instance.speedLimit,
+      'device_limit': instance.deviceLimit,
+      'month_price': instance.monthPrice,
+      'quarter_price': instance.quarterPrice,
+      'half_year_price': instance.halfYearPrice,
+      'year_price': instance.yearPrice,
+      'two_year_price': instance.twoYearPrice,
+      'three_year_price': instance.threeYearPrice,
+      'onetime_price': instance.onetimePrice,
+      'reset_price': instance.resetPrice,
+      'show': instance.show,
+      'sort': instance.sort,
+      'renew': instance.renew,
+    };
+
+_V2BoardOrder _$V2BoardOrderFromJson(Map<String, dynamic> json) =>
+    _V2BoardOrder(
+      tradeNo: json['trade_no'] as String?,
+      planId: (json['plan_id'] as num?)?.toInt(),
+      cycle: json['cycle'] as String?,
+      totalAmount: (json['total_amount'] as num?)?.toInt(),
+      status: (json['status'] as num?)?.toInt(),
+      createdAt: (json['created_at'] as num?)?.toInt(),
+      plan: json['plan'] == null
+          ? null
+          : V2BoardPlan.fromJson(json['plan'] as Map<String, dynamic>),
+    );
+
+Map<String, dynamic> _$V2BoardOrderToJson(_V2BoardOrder instance) =>
+    <String, dynamic>{
+      'trade_no': instance.tradeNo,
+      'plan_id': instance.planId,
+      'cycle': instance.cycle,
+      'total_amount': instance.totalAmount,
+      'status': instance.status,
+      'created_at': instance.createdAt,
+      'plan': instance.plan,
     };
 
 _V2BoardSubscription _$V2BoardSubscriptionFromJson(Map<String, dynamic> json) =>
