@@ -1,5 +1,5 @@
 name: fl_clash
-description: A multi-platform proxy client based on ClashMeta, simple and easy to use, open-source and ad-free.
+description: Taisafe - A multi-platform proxy client based on ClashMeta, simple and easy to use.
 publish_to: 'none'
 version: 0.8.91+20251208
 environment:

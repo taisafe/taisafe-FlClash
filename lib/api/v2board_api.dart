@@ -151,10 +151,27 @@ class V2BoardApi {
       
       return authResponse;
     } on DioException catch (e) {
-      throw V2BoardApiError(
-        e.response?.data?['message'] ?? '登录失败，请检查网络连接',
-        e.response?.statusCode,
-      );
+      // Handle different V2Board error response formats
+      String errorMessage = '登录失败，请检查网络连接';
+      
+      if (e.response?.data != null) {
+        final data = e.response!.data;
+        if (data is Map<String, dynamic>) {
+          // Try common error message fields
+          errorMessage = data['message'] ?? 
+                         data['msg'] ?? 
+                         data['error'] ?? 
+                         data['errors']?.toString() ??
+                         errorMessage;
+        } else if (data is String) {
+          errorMessage = data;
+        }
+      }
+      
+      // Add status code context for debugging
+      print('[V2Board Login Error] Status: ${e.response?.statusCode}, Message: $errorMessage');
+      
+      throw V2BoardApiError(errorMessage, e.response?.statusCode);
     }
   }
   

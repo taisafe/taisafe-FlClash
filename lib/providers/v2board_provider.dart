@@ -392,7 +392,7 @@ class LoginAction extends _$LoginAction {
     } catch (e) {
       print('[LoginAction] Error: $e');
       state = AsyncValue.error(e, StackTrace.current);
-      return false;
+      rethrow; // Rethrow so UI can catch and display the error
     }
   }
   
