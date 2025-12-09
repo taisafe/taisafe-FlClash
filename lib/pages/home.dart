@@ -67,28 +67,31 @@ class HomePage extends StatelessWidget {
                     systemNavigationBarColor:
                         context.colorScheme.surfaceContainer,
                   ),
-                  child: Column(
-                    children: [
-                      Flexible(
-                        flex: 1,
-                        child: MediaQuery.removePadding(
-                          removeTop: false,
-                          removeBottom: true,
+                  child: SafeArea(
+                    bottom: false,
+                    child: Column(
+                      children: [
+                        Flexible(
+                          flex: 1,
+                          child: MediaQuery.removePadding(
+                            removeTop: true,
+                            removeBottom: true,
+                            removeLeft: true,
+                            removeRight: true,
+                            context: context,
+                            child: pageView,
+                          ),
+                        ),
+                        MediaQuery.removePadding(
+                          removeTop: true,
+                          removeBottom: false,
                           removeLeft: true,
                           removeRight: true,
                           context: context,
-                          child: pageView,
+                          child: bottomNavigationBar,
                         ),
-                      ),
-                      MediaQuery.removePadding(
-                        removeTop: true,
-                        removeBottom: false,
-                        removeLeft: true,
-                        removeRight: true,
-                        context: context,
-                        child: bottomNavigationBar,
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 );
               } else {

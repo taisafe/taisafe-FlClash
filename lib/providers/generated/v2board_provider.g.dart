@@ -210,7 +210,7 @@ final class UserSubscriptionProvider
   }
 }
 
-String _$userSubscriptionHash() => r'df1ce7352c53afee26c8dcb0a47a1ac7230d5d41';
+String _$userSubscriptionHash() => r'53c4907d6b25e9f38e4efddab2ab7d0fd5505a36';
 
 /// User subscription info
 
@@ -416,7 +416,7 @@ final class LoginActionProvider
   }
 }
 
-String _$loginActionHash() => r'41d30447738bfbdefe8ec75f723cd62d97c384f5';
+String _$loginActionHash() => r'c92f31992d03f7daf0273193d7949e8c14f63d0e';
 
 /// Login action
 
@@ -475,7 +475,7 @@ final class RegisterActionProvider
   }
 }
 
-String _$registerActionHash() => r'07f98a216af51fc9581c62b6a76652d56934f941';
+String _$registerActionHash() => r'25a65b0f7ad39893002b9f8af2c1bf317268dd00';
 
 /// Register action
 

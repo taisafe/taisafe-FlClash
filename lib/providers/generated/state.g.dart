@@ -90,7 +90,7 @@ final class CurrentGroupsStateProvider
 }
 
 String _$currentGroupsStateHash() =>
-    r'6222c006e1970e7435268d32903b9019cf1a4351';
+    r'060f6ea6f0f4f118dbca3a6c20731b518117d2e0';
 
 @ProviderFor(navigationItemsState)
 const navigationItemsStateProvider = NavigationItemsStateProvider._();

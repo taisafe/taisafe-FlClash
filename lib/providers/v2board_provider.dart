@@ -2,8 +2,11 @@
 // Riverpod providers for V2Board state management
 
 import 'package:fl_clash/api/v2board_api.dart';
+import 'package:fl_clash/common/common.dart';
+import 'package:fl_clash/models/models.dart';
 import 'package:fl_clash/models/v2board_models.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fl_clash/state.dart';
+import 'package:flutter/foundation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:fl_clash/models/profile.dart';
@@ -422,31 +425,53 @@ class RegisterAction extends _$RegisterAction {
     required String email,
     required String password,
     String? inviteCode,
+    String? emailCode,
   }) async {
     state = const AsyncValue.loading();
+    
+    // Cache notifier refs before async gap to avoid disposal issues
+    final authNotifier = ref.read(authTokenProvider.notifier);
+    final userNotifier = ref.read(currentUserProvider.notifier);
+    final subNotifier = ref.read(userSubscriptionProvider.notifier);
+    
     try {
       final response = await v2boardApi.register(
         email: email,
         password: password,
         inviteCode: inviteCode,
+        emailCode: emailCode,
       );
       final token = response.authData ?? response.token;
+      debugPrint('[RegisterAction] Got token: $token');
       
       if (token != null) {
-        await ref.read(authTokenProvider.notifier).setToken(token, email: email);
-        await ref.read(currentUserProvider.notifier).fetch();
-        await ref.read(userSubscriptionProvider.notifier).fetch();
+        debugPrint('[RegisterAction] Setting token...');
+        await authNotifier.setToken(token, email: email);
         
+        debugPrint('[RegisterAction] Fetching user info...');
+        await userNotifier.fetch();
+        
+        debugPrint('[RegisterAction] Fetching subscription...');
+        await subNotifier.fetch();
+        
+        debugPrint('[RegisterAction] success');
         state = const AsyncValue.data(true);
         return true;
       }
       
+      debugPrint('[RegisterAction] Token is null');
       state = AsyncValue.error('注册失败', StackTrace.current);
       return false;
-    } catch (e) {
+    } catch (e, st) {
+      debugPrint('[RegisterAction] Error: $e\n$st');
       state = AsyncValue.error(e, StackTrace.current);
       return false;
     }
+  }
+  
+  /// Send email verification code
+  Future<void> sendEmailVerify(String email) async {
+    await v2boardApi.sendEmailVerify(email);
   }
 }
 

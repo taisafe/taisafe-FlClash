@@ -16,9 +16,9 @@ const browserUa =
     'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
 const packageName = 'app.taisafe.vpn';
 
-// V2Board Configuration
-const v2boardBaseUrl = 'https://www.taisafe.cc';
-const v2boardApiPrefix = '/api/v1';
+// V2Board Configuration - Uses encrypted domains from secure_config.dart
+// IMPORTANT: Do not add plain text domain names here!
+// Use SecureConfig.apiHost and SecureConfig.apiBaseUrl instead
 
 final unixSocketPath = '/tmp/TaiSafeSocket_${Random().nextInt(10000)}.sock';
 const helperPort = 47890;

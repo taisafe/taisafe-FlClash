@@ -65,15 +65,12 @@ class _NetworkSpeedState extends State<NetworkSpeed> {
                   ),
                 ),
                 Positioned(
-                  top: 0,
-                  right: 0,
-                  child: Transform.translate(
-                    offset: Offset(-16, -20),
-                    child: Text(
-                      _getLastTraffic(traffics).speedText,
-                      style: context.textTheme.bodySmall?.copyWith(
-                        color: color,
-                      ),
+                  top: 8,
+                  right: 16,
+                  child: Text(
+                    _getLastTraffic(traffics).speedText,
+                    style: context.textTheme.bodySmall?.copyWith(
+                      color: color,
                     ),
                   ),
                 ),

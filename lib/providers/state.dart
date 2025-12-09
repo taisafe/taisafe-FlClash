@@ -54,8 +54,8 @@ GroupsState currentGroupsState(Ref ref) {
   bool filterProxy(Proxy proxy) {
     final type = proxy.type.toLowerCase();
     final name = proxy.name.toLowerCase();
-    if (['urltest', 'url-test', 'fallback'].contains(type)) return false;
-    if (['自动选择', '故障转移', 'auto', 'fallback'].contains(name)) return false;
+    if (['urltest', 'url-test', 'fallback', 'selector'].contains(type)) return false;
+    if (['自动选择', '故障转移', 'auto', 'fallback', 'direct', 'reject'].contains(name)) return false;
     return true;
   }
 
@@ -70,6 +70,8 @@ GroupsState currentGroupsState(Ref ref) {
       Mode.rule => groups
           .where((item) => item.hidden == false)
           .where((element) => element.name != GroupName.GLOBAL.name)
+          .where((element) => element.name != 'DIRECT')
+          .where((element) => element.name != 'REJECT')
           .where((element) =>
               element.type != GroupType.URLTest &&
               element.type != GroupType.Fallback)

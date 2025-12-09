@@ -5,12 +5,17 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:dio/io.dart';
 import 'package:fl_clash/common/common.dart';
+import 'package:fl_clash/common/secure_config.dart';
 import 'package:fl_clash/models/v2board_models.dart';
+import 'package:flutter/foundation.dart';
+import 'package:path/path.dart' as p;
 
-/// V2Board API configuration
+/// V2Board API configuration (uses encrypted domains from SecureConfig)
 class V2BoardConfig {
-  static const String baseUrl = 'https://www.taisafe.cc';
+  // Domain is decrypted at runtime from SecureConfig
+  static String get baseUrl => 'https://${SecureConfig.apiHost}';
   static const String apiPrefix = '/api/v1';
   
   static String get apiBaseUrl => '$baseUrl$apiPrefix';
@@ -160,17 +165,23 @@ class V2BoardApi {
     String? inviteCode,
     String? emailCode,
   }) async {
+    final requestData = {
+      'email': email,
+      'password': password,
+      'password_confirmation': password,
+      if (inviteCode != null && inviteCode.isNotEmpty) 'invite_code': inviteCode,
+      if (emailCode != null && emailCode.isNotEmpty) 'email_code': emailCode,
+    };
+    debugPrint('[V2Board API] Register request data: $requestData');
+    
     try {
       final response = await _dio.post(
         '/passport/auth/register',
-        data: {
-          'email': email,
-          'password': password,
-          'password_confirmation': password,
-          if (inviteCode != null) 'invite_code': inviteCode,
-          if (emailCode != null) 'email_code': emailCode,
-        },
+        data: requestData,
       );
+      
+      debugPrint('[V2Board API] Register response status: ${response.statusCode}');
+      debugPrint('[V2Board API] Register response data: ${response.data}');
       
       final authResponse = _parseResponse(response, V2BoardAuthResponse.fromJson);
       
@@ -182,8 +193,25 @@ class V2BoardApi {
       
       return authResponse;
     } on DioException catch (e) {
+      debugPrint('[V2Board API] Register error status: ${e.response?.statusCode}');
+      debugPrint('[V2Board API] Register error data: ${e.response?.data}');
       throw V2BoardApiError(
         e.response?.data?['message'] ?? '注册失败',
+        e.response?.statusCode,
+      );
+    }
+  }
+  
+  /// Send email verification code for registration
+  Future<void> sendEmailVerify(String email) async {
+    try {
+      await _dio.post(
+        '/passport/comm/sendEmailVerify',
+        data: {'email': email},
+      );
+    } on DioException catch (e) {
+      throw V2BoardApiError(
+        e.response?.data?['message'] ?? '发送验证码失败',
         e.response?.statusCode,
       );
     }

@@ -1,5 +1,7 @@
 // Register Page - iOS 26 Clean Style
-// Registration page with email/password signup
+// Registration page with email/password signup and email verification
+
+import 'dart:async';
 
 import 'package:fl_clash/api/v2board_api.dart';
 import 'package:fl_clash/providers/v2board_provider.dart';
@@ -23,23 +25,91 @@ class RegisterPage extends ConsumerStatefulWidget {
 class _RegisterPageState extends ConsumerState<RegisterPage> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
+  final _emailCodeController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
   final _inviteCodeController = TextEditingController();
   
   bool _isLoading = false;
+  bool _isSendingCode = false;
   bool _obscurePassword = true;
   bool _obscureConfirmPassword = true;
   bool _acceptTerms = false;
   String? _errorMessage;
   
+  // Countdown timer for resend
+  int _countdown = 0;
+  Timer? _countdownTimer;
+  
   @override
   void dispose() {
     _emailController.dispose();
+    _emailCodeController.dispose();
     _passwordController.dispose();
     _confirmPasswordController.dispose();
     _inviteCodeController.dispose();
+    _countdownTimer?.cancel();
     super.dispose();
+  }
+  
+  Future<void> _handleSendCode() async {
+    final email = _emailController.text.trim();
+    if (email.isEmpty || !email.contains('@')) {
+      setState(() {
+        _errorMessage = '请输入有效的邮箱地址';
+      });
+      return;
+    }
+    
+    setState(() {
+      _isSendingCode = true;
+      _errorMessage = null;
+    });
+    
+    try {
+      await ref.read(registerActionProvider.notifier).sendEmailVerify(email);
+      
+      if (mounted) {
+        setState(() {
+          _countdown = 60;
+        });
+        _startCountdown();
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('验证码已发送，请查收邮件')),
+        );
+      }
+    } on V2BoardApiError catch (e) {
+      if (mounted) {
+        setState(() {
+          _errorMessage = e.message;
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          _errorMessage = '发送验证码失败，请稍后重试';
+        });
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isSendingCode = false;
+        });
+      }
+    }
+  }
+  
+  void _startCountdown() {
+    _countdownTimer?.cancel();
+    _countdownTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (_countdown > 0) {
+        setState(() {
+          _countdown--;
+        });
+      } else {
+        timer.cancel();
+      }
+    });
   }
   
   Future<void> _handleRegister() async {
@@ -63,6 +133,9 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
         password: _passwordController.text,
         inviteCode: _inviteCodeController.text.isNotEmpty 
           ? _inviteCodeController.text.trim() 
+          : null,
+        emailCode: _emailCodeController.text.trim().isNotEmpty
+          ? _emailCodeController.text.trim()
           : null,
       );
       
@@ -144,6 +217,10 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                         return null;
                       },
                     ),
+                    const SizedBox(height: 16),
+                    
+                    // Email Verification Code Field
+                    _buildEmailCodeField(colorScheme),
                     const SizedBox(height: 16),
                     
                     // Password Field
@@ -308,6 +385,81 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
         contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
       ),
       validator: required ? validator : null,
+    );
+  }
+  
+  Widget _buildEmailCodeField(ColorScheme colorScheme) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Expanded(
+          child: TextFormField(
+            controller: _emailCodeController,
+            keyboardType: TextInputType.number,
+            autocorrect: false,
+            enableSuggestions: false,
+            style: const TextStyle(fontSize: 16),
+            decoration: InputDecoration(
+              labelText: '邮箱验证码',
+              hintText: '请输入验证码',
+              prefixIcon: const Icon(Icons.verified_outlined),
+              filled: true,
+              fillColor: colorScheme.surfaceContainerHighest.withOpacity(0.5),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(16),
+                borderSide: BorderSide.none,
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(16),
+                borderSide: BorderSide.none,
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(16),
+                borderSide: BorderSide(color: colorScheme.primary, width: 2),
+              ),
+              contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+            ),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return '请输入验证码';
+              }
+              return null;
+            },
+          ),
+        ),
+        const SizedBox(width: 12),
+        SizedBox(
+          height: 56,
+          child: FilledButton.tonal(
+            onPressed: (_countdown > 0 || _isSendingCode) ? null : _handleSendCode,
+            style: FilledButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+              ),
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+            ),
+            child: _isSendingCode
+              ? SizedBox(
+                  height: 20,
+                  width: 20,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2,
+                    color: colorScheme.primary,
+                  ),
+                )
+              : Text(
+                  _countdown > 0 ? '${_countdown}s' : '发送验证码',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    color: (_countdown > 0) 
+                      ? colorScheme.onSurfaceVariant 
+                      : colorScheme.primary,
+                  ),
+                ),
+          ),
+        ),
+      ],
     );
   }
   

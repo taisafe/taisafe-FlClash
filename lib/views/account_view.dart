@@ -50,6 +50,9 @@ class _AccountViewState extends ConsumerState<AccountView>
           ),
           FilledButton(
             onPressed: () => Navigator.pop(context, true),
+            style: FilledButton.styleFrom(
+              backgroundColor: Colors.blue,
+            ),
             child: const Text('退出'),
           ),
         ],

@@ -18,6 +18,27 @@ class ProfilesView extends ConsumerStatefulWidget {
 class _ProfilesViewState extends ConsumerState<ProfilesView> {
   bool _isDownloading = false;
 
+  /// Mask subscription URL to only show token for privacy
+  /// Example: "https://domain.com/api/v1/client/subscribe?token=abc123"
+  /// Returns: "Token: abc123..."
+  String _maskSubscriptionUrl(String url) {
+    try {
+      final uri = Uri.parse(url);
+      final token = uri.queryParameters['token'];
+      if (token != null && token.isNotEmpty) {
+        // Show first 8 and last 4 characters of token
+        if (token.length > 12) {
+          return 'Token: ${token.substring(0, 8)}...${token.substring(token.length - 4)}';
+        }
+        return 'Token: $token';
+      }
+      // If no token found, just show "已配置" (configured)
+      return '已配置';
+    } catch (e) {
+      return '已配置';
+    }
+  }
+
   Future<void> _forceDownloadProfile(Profile profile) async {
     if (_isDownloading) return;
     
@@ -126,9 +147,11 @@ class _ProfilesViewState extends ConsumerState<ProfilesView> {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    profile.url,
-                    style: Theme.of(context).textTheme.bodySmall,
-                    maxLines: 2,
+                    _maskSubscriptionUrl(profile.url),
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: Theme.of(context).textTheme.bodySmall?.color?.withOpacity(0.6),
+                    ),
+                    maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
                 ],
